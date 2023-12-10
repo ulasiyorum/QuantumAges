@@ -16,7 +16,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     private void Awake()
     {
-        StartPopUpMessage.Message("asdasdas", Color.red);
+        PhotonNetwork.ConnectUsingSettings();
+
         GenerateUsername();
     }
 
@@ -42,24 +43,31 @@ public class MainMenu : MonoBehaviourPunCallbacks
         PlayerPrefs.SetString("username", username);
         sessionTitle.text = $"Welcome, {username}!";
     }
-    
-    private void OnEnable()
+
+    public override void OnEnable()
     {
         startButton.onClick.AddListener(OnStartButtonClick);
         joinButton.onClick.AddListener(OnJoinButtonClick);
         backButton.onClick.AddListener(OnBackButtonClick);
+        base.OnEnable();
     }
-    
-    private void OnDisable()
+
+    public override void OnDisable()
     {
         startButton.onClick.RemoveListener(OnStartButtonClick);
         joinButton.onClick.RemoveListener(OnJoinButtonClick);
         backButton.onClick.RemoveListener(OnBackButtonClick);
+        base.OnDisable();
     }
 
     private void OnStartButtonClick()
     {
-        throw new NotImplementedException("Requires Multiplayer Implementation");
+        if (!PhotonNetwork.IsConnected || !PhotonNetwork.InLobby)
+        {
+            PopUp.Error("Please wait for connection to be established");
+            return;
+        }
+        StartSession();
     }
     
     private void OnJoinButtonClick()
@@ -72,8 +80,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
             return;
         }
 
-        throw new NotImplementedException("Requires Multiplayer Implementation");
-
+        JoinSession();
     }
     
     private void OnBackButtonClick()
@@ -89,10 +96,62 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         if (roomName is null)
         {
-            StartPopUpMessage.Message("Please wait for username to be generated", Color.red);
+            PopUp.Error("Please wait for username to be generated");
         }
-        
         PhotonNetwork.CreateRoom(roomName, new Photon.Realtime.RoomOptions { MaxPlayers = 2 });
-        throw new NotImplementedException("Requires Multiplayer Implementation");
+
+    }
+    
+    private void JoinSession()
+    {
+        PopUp.Warning("Please wait");
+        string roomName = sessionsDropdown.options[sessionsDropdown.value]?.text;
+        if(roomName is null)
+        {
+            PopUp.Error("Please select a session");
+            return;
+        }
+        PhotonNetwork.JoinRoom(roomName);
+    }
+    
+    public override void OnConnectedToMaster()
+    {
+        PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnJoinedLobby()
+    {
+        base.OnJoinedLobby();
+        PopUp.Success("Connected to lobby");
+    }
+
+    public override void OnJoinedRoom()
+    {
+        PhotonNetwork.LoadLevel("Game");
+    }
+    
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        PopUp.Error(message);
+    }
+    
+    public override void OnCreatedRoom()
+    {
+        PopUp.Success("Room created successfully");
+        PhotonNetwork.LoadLevel("Game");
+    }
+    
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        PopUp.Error(message);
+    }
+    
+    public override void OnRoomListUpdate(System.Collections.Generic.List<Photon.Realtime.RoomInfo> roomList)
+    {
+        sessionsDropdown.ClearOptions();
+        foreach (var room in roomList)
+        {
+            sessionsDropdown.options.Add(new TMP_Dropdown.OptionData(room.Name));
+        }
     }
 }
