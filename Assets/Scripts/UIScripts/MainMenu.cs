@@ -1,13 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Http;
 using Helpers;
+using Photon.Pun;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainMenu : MonoBehaviour
+public class MainMenu : MonoBehaviourPunCallbacks
 {
     public Button startButton;
     public Button joinButton;
@@ -17,6 +16,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake()
     {
+        StartPopUpMessage.Message("asdasdas", Color.red);
         GenerateUsername();
     }
 
@@ -85,6 +85,14 @@ public class MainMenu : MonoBehaviour
     
     private void StartSession()
     {
+        string roomName = PlayerPrefs.GetString("username");
+
+        if (roomName is null)
+        {
+            StartPopUpMessage.Message("Please wait for username to be generated", Color.red);
+        }
+        
+        PhotonNetwork.CreateRoom(roomName, new Photon.Realtime.RoomOptions { MaxPlayers = 2 });
         throw new NotImplementedException("Requires Multiplayer Implementation");
     }
 }
