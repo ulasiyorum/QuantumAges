@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class UnitSpawner : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    private GameObject unitPrefab;
+    [SerializeField]
+    private int maxUnitCount;
 
-    // Update is called once per frame
-    void Update()
+    private Vector2 minSize = new Vector2(-22, -22);
+    private Vector2 maxSize = new Vector2(22, 22);
+
+    public List<UnitController> SpawnUnits()
     {
-        
-    }
-}
+        List<UnitController> unitList = new List<UnitController>(maxUnitCount);
+
+        for (int i = 0; i < maxUnitCount; i++)
+        {
+            Vector3 position = new Vector3(Random.Range(minSize.x, maxSize.x), 1, Random.Range(minSize.y, maxSize.y));
+
+            GameObject clone = Instantiate(unitPrefab, position, Quaternion.identity);
+
+            UnitController unit = clone.GetComponent<UnitController>();
+
+            unitList.Add(unit);
+        }
+        return unitList;
+    } }
+
