@@ -1,8 +1,11 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class PopUpMessageBehaviour : MonoBehaviour
 {
+    public Action onComplete;
     private TMP_Text text;
 
     // Start is called before the first frame update
@@ -19,6 +22,9 @@ public class PopUpMessageBehaviour : MonoBehaviour
         text.transform.position += new Vector3(0,Time.deltaTime * 2,0);
 
         if (text.color.a <= 0)
+        {
+            onComplete?.Invoke();
             Destroy(gameObject);
+        }
     }
 }
