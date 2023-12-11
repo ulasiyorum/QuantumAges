@@ -1,11 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CameraController : MonoBehaviour
 {
     public float panSpeed = 20f;
     public float panBorderThickness = 10f;  
+    public Vector2 panLimit;  
+    
+    public float scrollSpeed = 20f;
+    public float minY = 20f;
+    public float maxY = 120f;
     
 
     // Update is called once per frame
@@ -28,6 +34,14 @@ public class CameraController : MonoBehaviour
         {
             pos.x -= panSpeed * Time.deltaTime;   //move left
         }
+        float scroll = Input.GetAxis("Mouse ScrollWheel");  //zoom in and out
+        pos.y -= scroll * scrollSpeed * 100f * Time.deltaTime;
+
+        pos.x = Mathf.Clamp(pos.x, -panLimit.x, panLimit.x);  //limit the camera movement   
+        pos.y = Mathf.Clamp(pos.y, minY, maxY);  //limit the camera movement    
+        pos.z = Mathf.Clamp(pos.z, -panLimit.y, panLimit.y);  //limit the camera movement
+
+
         transform.position = pos;
     }
 }
