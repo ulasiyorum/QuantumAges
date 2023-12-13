@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CameraManager : MonoBehaviour
+public class CameraManager : MonoBehaviourPun
 {
     public float panSpeed = 20f;
     public float panBorderThickness = 10f;  
@@ -17,6 +18,8 @@ public class CameraManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!photonView.IsMine) return;
+        
         Vector3 pos = transform.position;
         if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness )
         {
