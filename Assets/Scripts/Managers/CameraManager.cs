@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CameraController : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
     public float panSpeed = 20f;
     public float panBorderThickness = 10f;  
@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
         Vector3 pos = transform.position;
         if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness )
         {
-       pos.z += panSpeed * Time.deltaTime;   //move forward
+            pos.z += panSpeed * Time.deltaTime;   //move forward
         }
         if (Input.GetKey("s") || Input.mousePosition.y <=  panBorderThickness)
         {

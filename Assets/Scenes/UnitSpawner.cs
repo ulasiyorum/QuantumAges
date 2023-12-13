@@ -12,9 +12,9 @@ public class UnitSpawner : MonoBehaviour
     private Vector2 minSize = new Vector2(-22, -22);
     private Vector2 maxSize = new Vector2(22, 22);
 
-    public List<UnitController> SpawnUnits()
+    public List<UnitManager> SpawnUnits()
     {
-        List<UnitController> unitList = new List<UnitController>(maxUnitCount);
+        List<UnitManager> unitList = new List<UnitManager>(maxUnitCount);
 
         for (int i = 0; i < maxUnitCount; i++)
         {
@@ -22,7 +22,7 @@ public class UnitSpawner : MonoBehaviour
 
             GameObject clone = Instantiate(unitPrefab, position, Quaternion.identity);
 
-            UnitController unit = clone.GetComponent<UnitController>();
+            UnitManager unit = clone.GetComponent<UnitManager>();
 
             unitList.Add(unit);
         }

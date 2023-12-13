@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MouseDrag : MonoBehaviour
+public class MouseDragBehaviour : MonoBehaviour
 {
     [SerializeField]
     private RectTransform dragRectangle;
@@ -12,12 +12,12 @@ public class MouseDrag : MonoBehaviour
     private Vector2 end = Vector2.zero;
 
     private Camera mainCamera;
-    private RTSUnitController rtsUnitController;
+    private RTSUnitManager rtsUnitController;
 
     private void Awake()
     {
         mainCamera = Camera.main;
-        rtsUnitController = GetComponent<RTSUnitController>();
+        rtsUnitController = GetComponent<RTSUnitManager>();
 
         DrawDragRectangle();
     }
@@ -75,7 +75,7 @@ public class MouseDrag : MonoBehaviour
     }
 private void SelectUnits()
     {
-        foreach(UnitController unit in rtsUnitController.UnitList)
+        foreach(UnitManager unit in rtsUnitController.UnitList)
         {
             if(dragRect.Contains(mainCamera.WorldToScreenPoint(unit.transform.position)))
             {

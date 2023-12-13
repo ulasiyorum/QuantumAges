@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class UnitController : MonoBehaviour
+public class UnitManager : MonoBehaviour
 {
     [SerializeField]
     private GameObject unitMarker;
