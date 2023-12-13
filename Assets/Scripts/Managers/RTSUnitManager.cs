@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class RTSUnitManager : MonoBehaviour
 {
-    [SerializeField] private UnitSpawner unitSpawner;
     private List<UnitManager> selectedUnitList;
     public List<UnitManager> UnitList { private set; get; }
 
@@ -13,7 +12,6 @@ public class RTSUnitManager : MonoBehaviour
     private void Awake()
     {
         selectedUnitList = new List<UnitManager>();
-        UnitList = unitSpawner.SpawnUnits();
     }
 
     public void ClickSelectUnit(UnitManager newUnit)
