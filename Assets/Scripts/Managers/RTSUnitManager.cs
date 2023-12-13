@@ -35,7 +35,7 @@ public class RTSUnitManager : MonoBehaviour
 
     public void MoveSelectedUnits(Vector3 end)
     {
-        for (var i = 0; i < selectedUnitList.Count; i++) selectedUnitList[i].Moveto(end);
+        for (var i = 0; i < selectedUnitList.Count; i++) selectedUnitList[i].MoveTo(end);
     }
 
     public void DeselectAll()

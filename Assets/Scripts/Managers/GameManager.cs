@@ -1,4 +1,5 @@
 using System;
+using Consts;
 using Helpers;
 using UnityEngine;
 
@@ -11,6 +12,9 @@ namespace Managers
         public GameObject spawner_red;
         public GameObject base_green;
         public GameObject base_red;
+        
+        public GameObject greenUnitMarker;
+        public GameObject redUnitMarker;
         private void Awake()
         {
             if (instance == null)
@@ -44,6 +48,16 @@ namespace Managers
             base_green.AssignOwner(MultiplayerHelper.LocalPlayer);
             spawner_red.AssignOwner(MultiplayerHelper.OtherPlayer);
             base_red.AssignOwner(MultiplayerHelper.OtherPlayer);
+        }
+        
+        public GameObject GetUnitMarker(UnitTeam unitTeam)
+        {
+            return unitTeam switch
+            {
+                UnitTeam.Green => greenUnitMarker,
+                UnitTeam.Red => redUnitMarker,
+                _ => throw new ArgumentOutOfRangeException(nameof(unitTeam), unitTeam, null)
+            };
         }
     }
 }

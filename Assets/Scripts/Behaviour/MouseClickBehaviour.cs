@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
+using Helpers;
+using Photon.Pun;
 using UnityEngine;
 
-public class MouseClickBehaviour : MonoBehaviour
+public class MouseClickBehaviour : MonoBehaviourPun
 {
     [SerializeField] private LayerMask layerUnit;
     [SerializeField] private LayerMask layerGround;
 
     private Camera mainCamera;
-    private RTSUnitManager rtsUnitController;
+    private RTSUnitManager rtsUnitManager;
 
     private void Awake()
     {
         mainCamera = Camera.main;
-        rtsUnitController = GetComponent<RTSUnitManager>();
+        rtsUnitManager = GetComponent<RTSUnitManager>();
     }
 
     private void Update()
     {
+        if (!photonView.IsMine) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;
@@ -28,13 +32,13 @@ public class MouseClickBehaviour : MonoBehaviour
                 var unitManager = hit.transform.GetComponent<UnitManager>();
                 if (unitManager == null) return;
                 if (Input.GetKey(KeyCode.LeftShift))
-                    rtsUnitController.ShiftClickSelectUnit(unitManager);
+                    rtsUnitManager.ShiftClickSelectUnit(unitManager);
                 else
-                    rtsUnitController.ClickSelectUnit(unitManager);
+                    rtsUnitManager.ClickSelectUnit(unitManager);
             }
             else
             {
-                if (!Input.GetKey(KeyCode.LeftShift)) rtsUnitController.DeselectAll();
+                if (!Input.GetKey(KeyCode.LeftShift)) rtsUnitManager.DeselectAll();
             }
         }
 
@@ -44,7 +48,7 @@ public class MouseClickBehaviour : MonoBehaviour
             var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
-                rtsUnitController.MoveSelectedUnits(hit.point);
+                rtsUnitManager.MoveSelectedUnits(hit.point);
         }
     }
 }

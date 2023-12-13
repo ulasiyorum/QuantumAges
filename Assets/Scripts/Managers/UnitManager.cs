@@ -1,31 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using Consts;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class UnitManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject unitMarker;
+    public GameObject unitMarker;
     private NavMeshAgent navMeshAgent;
+    public SoldierEnum soldierType;
+    public UnitTeam unitTeam;
 
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
-    }   
+    }
 
     public void SelectUnit()
     {
-          unitMarker.SetActive(true);   
+        unitMarker.SetActive(true);
     }
+
     public void DeselectUnit()
     {
-          unitMarker.SetActive(false);   
+        unitMarker.SetActive(false);
     }
 
-    public void Moveto(Vector3 end)
+    public void MoveTo(Vector3 end)
     {
-        navMeshAgent.SetDestination(end);   
+        navMeshAgent.SetDestination(end);
     }
-
 }

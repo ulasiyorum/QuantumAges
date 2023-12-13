@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class MouseDragBehaviour : MonoBehaviour
 {
-    [SerializeField]
-    private RectTransform dragRectangle;
+    [SerializeField] private RectTransform dragRectangle;
 
     private Rect dragRect;
-    private Vector2 start = Vector2.zero;   
+    private Vector2 start = Vector2.zero;
     private Vector2 end = Vector2.zero;
 
     private Camera mainCamera;
-    private RTSUnitManager rtsUnitController;
+    private RTSUnitManager rtsUnitManager;
 
     private void Awake()
     {
         mainCamera = Camera.main;
-        rtsUnitController = GetComponent<RTSUnitManager>();
+        rtsUnitManager = GetComponent<RTSUnitManager>();
 
         DrawDragRectangle();
     }
+
     private void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -28,11 +28,13 @@ public class MouseDragBehaviour : MonoBehaviour
             start = Input.mousePosition;
             dragRect = new Rect();
         }
+
         if (Input.GetMouseButton(0))
         {
             end = Input.mousePosition;
             DrawDragRectangle();
         }
+
         if (Input.GetMouseButtonUp(0))
         {
             CalculateDragRect();
@@ -42,13 +44,13 @@ public class MouseDragBehaviour : MonoBehaviour
             DrawDragRectangle();
         }
     }
+
     private void DrawDragRectangle()
     {
         dragRectangle.position = (start + end) * 0.5f;
         dragRectangle.sizeDelta = new Vector2(Mathf.Abs(start.x - end.x), Mathf.Abs(start.y - end.y));
-
-
     }
+
     private void CalculateDragRect()
     {
         if (Input.mousePosition.x < start.x)
@@ -73,18 +75,11 @@ public class MouseDragBehaviour : MonoBehaviour
             dragRect.yMax = Input.mousePosition.y;
         }
     }
-private void SelectUnits()
+
+    private void SelectUnits()
     {
-        foreach(UnitManager unit in rtsUnitController.UnitList)
-        {
-            if(dragRect.Contains(mainCamera.WorldToScreenPoint(unit.transform.position)))
-            {
-                rtsUnitController.DragSelectUnit(unit);
-            }
-        }
+        foreach (var unit in rtsUnitManager.UnitList)
+            if (dragRect.Contains(mainCamera.WorldToScreenPoint(unit.transform.position)))
+                rtsUnitManager.DragSelectUnit(unit);
     }
-
-    }
-
-
-
+}

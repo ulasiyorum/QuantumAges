@@ -1,10 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Consts;
 using Helpers;
 using Photon.Realtime;
 using UnityEngine;
+using GameManager = Managers.GameManager;
 
 public class SoldierFactory : MonoBehaviour
 {
@@ -33,8 +32,13 @@ public class SoldierFactory : MonoBehaviour
             SoldierEnum.SuperSoldier => Instantiate(soldierPrefab_superSoldier, spawnPosition, Quaternion.identity),
             _ => throw new ArgumentOutOfRangeException()
         };
-        
+
+        var unitComponent = go.AddComponent<UnitManager>();
+        unitComponent.soldierType = soldier;
         go.AssignOwner(owner);
+        
+        unitComponent.unitTeam = owner.IsLocal ? UnitTeam.Green : UnitTeam.Red;
+        unitComponent.unitMarker = GameManager.instance.GetUnitMarker(unitComponent.unitTeam);
         
         return go;
     }
