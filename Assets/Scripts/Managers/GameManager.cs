@@ -18,7 +18,7 @@ namespace Managers
                 instance = this;
             }
 
-            IsAllConnected();
+            WaitingConnection();
         }
 
         private void Update()
@@ -26,22 +26,24 @@ namespace Managers
             
         }
         
-        private bool IsAllConnected()
+        private void WaitingConnection()
         {
             if (MultiplayerHelper.Players.Count == 2)
             {
                 PopUp.Success("All players connected, starting the game");
                 StartGame();
-                return true;
+                return;
             }
             
-            PopUp.Warning("Waiting for other player to connect", () => IsAllConnected());
-            return false;
+            PopUp.Warning("Waiting for other player to connect", WaitingConnection);
         }
 
         private void StartGame()
         {
-            Debug.Log("StartGame");
+            spawner_green.AssignOwner(MultiplayerHelper.LocalPlayer);
+            base_green.AssignOwner(MultiplayerHelper.LocalPlayer);
+            spawner_red.AssignOwner(MultiplayerHelper.OtherPlayer);
+            base_red.AssignOwner(MultiplayerHelper.OtherPlayer);
         }
     }
 }
