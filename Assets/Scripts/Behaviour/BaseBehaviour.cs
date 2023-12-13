@@ -1,3 +1,4 @@
+using System;
 using Helpers;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -7,6 +8,12 @@ namespace Behaviour
     public class BaseBehaviour : MonoBehaviour, IPointerDownHandler
     {
         public GameObject optionsUI;
+        private SoldierFactory _soldierFactory;
+
+        private void Awake()
+        {
+            _soldierFactory = GetComponent<SoldierFactory>();
+        }
 
         public void OnPointerDown(PointerEventData eventData)
         {
