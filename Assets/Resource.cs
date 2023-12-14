@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Resource : MonoBehaviour
 {
-    
-  public float amount = 100f;
+    public float[] resources;
+    public float amount = 100f;
     public int resourceType;
     public GameObject[] collection_points;
 
@@ -36,8 +36,13 @@ public class Resource : MonoBehaviour
             }
         }
         return false;
-    }   
-
+    }
+    public void AddCollectedResource(float amount)
+    {
+        // Toplanan kaynak miktarýný kaynak dizisine ekleyebilir veya baþka bir iþlem yapabilirsiniz.
+        // Bu örnekte kaynaklarý sýfýrdan baþlatýyorum, sizin senaryonuza göre uygun iþlemleri yapmalýsýnýz.
+        resources[0] += amount;
+    }
 }
 
 
