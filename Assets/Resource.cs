@@ -24,12 +24,13 @@ public class Resource : MonoBehaviour
     {
         
     }
-    public bool collectResource()
+    public bool collectResource(Soldier s)
     {
         for (int i = 0; i < collection_points_usage.Length; i++)
         {
             if (!collection_points_usage[i])
             {
+                s.assigned_point = collection_points[i];    
                 collection_points_usage[i] = true;  
                 return true;
             }
