@@ -37,12 +37,7 @@ public class Resource : MonoBehaviour
         }
         return false;
     }
-    public void AddCollectedResource(float amount)
-    {
-        // Toplanan kaynak miktarýný kaynak dizisine ekleyebilir veya baþka bir iþlem yapabilirsiniz.
-        // Bu örnekte kaynaklarý sýfýrdan baþlatýyorum, sizin senaryonuza göre uygun iþlemleri yapmalýsýnýz.
-        resources[0] += amount;
-    }
+   
 }
 
 

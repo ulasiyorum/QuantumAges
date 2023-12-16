@@ -61,7 +61,7 @@ public class Soldier : MonoBehaviour
             }   
         }
     }
-    private void SendCollectedResource()
+     private void SendCollectedResource()
     {
         // Toplanan miktarý MainEvents scriptine iletmek için çaðrý yap
         if (mainEvents != null)
