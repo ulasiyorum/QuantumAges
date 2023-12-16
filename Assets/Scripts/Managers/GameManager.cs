@@ -49,15 +49,5 @@ namespace Managers
             spawner_red.AssignOwner(MultiplayerHelper.OtherPlayer);
             base_red.AssignOwner(MultiplayerHelper.OtherPlayer);
         }
-        
-        public GameObject GetUnitMarker(UnitTeam unitTeam)
-        {
-            return unitTeam switch
-            {
-                UnitTeam.Green => greenUnitMarker,
-                UnitTeam.Red => redUnitMarker,
-                _ => throw new ArgumentOutOfRangeException(nameof(unitTeam), unitTeam, null)
-            };
-        }
     }
 }

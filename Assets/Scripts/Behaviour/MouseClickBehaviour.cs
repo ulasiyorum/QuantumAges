@@ -31,6 +31,7 @@ public class MouseClickBehaviour : MonoBehaviourPun
             {
                 var unitManager = hit.transform.GetComponent<UnitManager>();
                 if (unitManager == null) return;
+
                 if (Input.GetKey(KeyCode.LeftShift))
                     rtsUnitManager.ShiftClickSelectUnit(unitManager);
                 else

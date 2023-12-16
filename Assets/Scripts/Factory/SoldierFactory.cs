@@ -5,6 +5,7 @@ using Helpers;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.UI;
 using GameManager = Managers.GameManager;
 
 public class SoldierFactory : MonoBehaviourPun
@@ -44,19 +45,18 @@ public class SoldierFactory : MonoBehaviourPun
         var rotation = Quaternion.Euler(0, 0, 0);
         GameObject go = soldier switch
         {
-            SoldierEnum.Robot => Instantiate(soldierPrefab_robot, spawnPosition, rotation),
-            SoldierEnum.Shooter => Instantiate(soldierPrefab_shooter, spawnPosition, rotation),
-            SoldierEnum.SuperSoldier => Instantiate(soldierPrefab_superSoldier, spawnPosition, rotation),
+            SoldierEnum.Robot => Instantiate(soldierPrefab_robot, spawnPosition, Quaternion.identity),
+            SoldierEnum.Shooter => Instantiate(soldierPrefab_shooter, spawnPosition, Quaternion.identity),
+            SoldierEnum.SuperSoldier => Instantiate(soldierPrefab_superSoldier, spawnPosition, Quaternion.identity),
             _ => throw new ArgumentOutOfRangeException()
         };
         anim_doors2.CrossFade("Structure_v3_close", 0.1f);
         anim_doors1.CrossFade("Structure_v3_close", 0.1f);
-        var unitComponent = go.AddComponent<UnitManager>();
+        go.transform.rotation = rotation;
+        var unitComponent = go.GetComponent<UnitManager>();
         unitComponent.soldierType = soldier;
         go.AssignOwner(owner);
-        
         unitComponent.unitTeam = owner.IsLocal ? UnitTeam.Green : UnitTeam.Red;
-        unitComponent.unitMarker = GameManager.instance.GetUnitMarker(unitComponent.unitTeam);
         return go;
     }
 }

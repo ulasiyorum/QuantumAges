@@ -5,13 +5,16 @@ using UnityEngine;
 
 public class RTSUnitManager : MonoBehaviour
 {
+    public static RTSUnitManager Instance { private set; get; }
     private List<UnitManager> selectedUnitList;
     public List<UnitManager> UnitList { private set; get; }
 
 
     private void Awake()
     {
+        Instance = this;
         selectedUnitList = new List<UnitManager>();
+        UnitList = new List<UnitManager>();
     }
 
     public void ClickSelectUnit(UnitManager newUnit)

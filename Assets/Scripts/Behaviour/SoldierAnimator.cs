@@ -7,6 +7,7 @@ public abstract class SoldierAnimator : MonoBehaviour
     private Animator animator;
     
     private bool animPlaying = false;
+    private bool hasDied = false;
 
     private bool AnimPlaying
     {
@@ -24,7 +25,7 @@ public abstract class SoldierAnimator : MonoBehaviour
     public static List<SoldierAnimator> soldiers = new List<SoldierAnimator>();
     private static readonly int AnimEnd = Animator.StringToHash("animEnd");
 
-    void Awake()
+    protected virtual void Awake()
     {
         animator = GetComponent<Animator>();
         soldiers.Add(this);
@@ -45,8 +46,10 @@ public abstract class SoldierAnimator : MonoBehaviour
     }
     protected virtual void OnDie()
     {
+        if (hasDied) return;
         AnimPlaying = true;
         animator.Play("die");
+        hasDied = true;
     }
     protected virtual void OnIdle()
     {

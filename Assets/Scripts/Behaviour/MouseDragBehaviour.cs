@@ -9,12 +9,15 @@ public class MouseDragBehaviour : MonoBehaviour
     private Rect dragRect;
     private Vector2 start = Vector2.zero;
     private Vector2 end = Vector2.zero;
-
     private Camera mainCamera;
+    private RectTransform mainCanvasRectTransform;
     private RTSUnitManager rtsUnitManager;
-
+    
+    private float WidthScaleFactor => mainCanvasRectTransform.sizeDelta.x / Screen.width;
+    private float HeightScaleFactor => mainCanvasRectTransform.sizeDelta.y / Screen.height;
     private void Awake()
     {
+        mainCanvasRectTransform = GameObject.Find("Canvas").GetComponent<RectTransform>();
         mainCamera = Camera.main;
         rtsUnitManager = GetComponent<RTSUnitManager>();
 
@@ -48,7 +51,8 @@ public class MouseDragBehaviour : MonoBehaviour
     private void DrawDragRectangle()
     {
         dragRectangle.position = (start + end) * 0.5f;
-        dragRectangle.sizeDelta = new Vector2(Mathf.Abs(start.x - end.x), Mathf.Abs(start.y - end.y));
+        dragRectangle.sizeDelta = new Vector2(Mathf.Abs(start.x * WidthScaleFactor - end.x * WidthScaleFactor), 
+            Mathf.Abs(start.y * HeightScaleFactor - end.y * HeightScaleFactor));
     }
 
     private void CalculateDragRect()
