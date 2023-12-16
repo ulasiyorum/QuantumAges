@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class MouseDragBehaviour : MonoBehaviour
+public class MouseDragBehaviour : MonoBehaviourPun
 {
     [SerializeField] private RectTransform dragRectangle;
 
@@ -26,6 +27,8 @@ public class MouseDragBehaviour : MonoBehaviour
 
     private void Update()
     {
+        if(!photonView.IsMine) return;
+        
         if (Input.GetMouseButtonDown(0))
         {
             start = Input.mousePosition;
