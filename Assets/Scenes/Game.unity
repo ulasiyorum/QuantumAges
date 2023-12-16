@@ -1211,14 +1211,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -7, y: 113, z: 1.6}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 27.5, y: 3, z: 30.32}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1057006759
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2663,6 +2663,8 @@ MonoBehaviour:
   spawner_red: {fileID: 108607524}
   base_green: {fileID: 2393044301681865579}
   base_red: {fileID: 2051084403}
+  greenUnitMarker: {fileID: 0}
+  redUnitMarker: {fileID: 0}
 --- !u!114 &2124299779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3874,6 +3876,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 492196927345746124}
+  - component: {fileID: 493454237269403911}
   m_Layer: 0
   m_Name: Spawner_0
   m_TagString: Untagged
@@ -3881,6 +3884,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &493454237269403911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 493454237269403910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440ecfb144f1f410da4458155edea693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spawnPosition: {x: 28.22947, y: 0, z: 38}
+  localPlayer: 1
+  anim_doors1: {fileID: 527148128938819666}
+  anim_doors2: {fileID: 527148129898520714}
+  soldierPrefab_robot: {fileID: 5684167907904155037, guid: ab9340c0a7b8941c8842e35608325cd2, type: 3}
+  soldierPrefab_shooter: {fileID: 1709745467937500386, guid: b16e39365db1a4d88826367585330f05, type: 3}
+  soldierPrefab_superSoldier: {fileID: 7902705191964508785, guid: d6f86dd1d8d92484e84c3b19e9af781b, type: 3}
 --- !u!1 &493454237888830344
 GameObject:
   m_ObjectHideFlags: 0
@@ -3931,7 +3953,7 @@ Animation:
   - {fileID: 7400000, guid: 01de1ad56d653774683141c3dbcaaac8, type: 3}
   - {fileID: 7400002, guid: 01de1ad56d653774683141c3dbcaaac8, type: 3}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
 --- !u!111 &527148129898520714
@@ -3948,7 +3970,7 @@ Animation:
   - {fileID: 7400000, guid: 01de1ad56d653774683141c3dbcaaac8, type: 3}
   - {fileID: 7400002, guid: 01de1ad56d653774683141c3dbcaaac8, type: 3}
   m_WrapMode: 0
-  m_PlayAutomatically: 1
+  m_PlayAutomatically: 0
   m_AnimatePhysics: 0
   m_CullingType: 0
 --- !u!111 &527148131291982764
