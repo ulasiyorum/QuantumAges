@@ -27,12 +27,7 @@ public class SoldierFactory : MonoBehaviourPun
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.A))
-            SpawnSoldier(SoldierEnum.Robot);
-        if (Input.GetKeyDown(KeyCode.S))
-            SpawnSoldier(SoldierEnum.Shooter);
-        if (Input.GetKeyDown(KeyCode.D))
-            SpawnSoldier(SoldierEnum.SuperSoldier);
+
     }
 
     public async Task<GameObject> SpawnSoldier(SoldierEnum soldier)

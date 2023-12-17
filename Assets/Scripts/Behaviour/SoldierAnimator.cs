@@ -61,4 +61,10 @@ public abstract class SoldierAnimator : MonoBehaviour
     {
         AnimPlaying = value;
     }
+    
+    protected float GetCurrentAnimationLength()
+    {
+        var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        return clipInfo[0].clip.length;
+    }
 }
