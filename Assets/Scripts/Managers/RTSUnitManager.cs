@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Consts;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -19,7 +21,8 @@ public class RTSUnitManager : MonoBehaviour
 
     public void ClickSelectUnit(UnitManager newUnit)
     {
-        DeselectAll();
+        DeselectAll(UnitTeam.Green);
+        DeselectAll(UnitTeam.Red);
         SelectUnit(newUnit);
     }
 
@@ -36,15 +39,18 @@ public class RTSUnitManager : MonoBehaviour
         if (!selectedUnitList.Contains(newUnit)) SelectUnit(newUnit);
     }
 
-    public void MoveSelectedUnits(Vector3 end)
+    public void MoveSelectedUnits(Vector3 end, UnitTeam team)
     {
-        for (var i = 0; i < selectedUnitList.Count; i++) selectedUnitList[i].MoveTo(end);
+        foreach (var t in selectedUnitList.Where(x => x.unitTeam == team))
+            t.MoveTo(end);
     }
 
-    public void DeselectAll()
+    public void DeselectAll(UnitTeam team)
     {
-        for (var i = 0; i < selectedUnitList.Count; i++) selectedUnitList[i].DeselectUnit();
-        selectedUnitList.Clear();
+        foreach (var t in selectedUnitList.Where(x => x.unitTeam == team))
+            t.DeselectUnit();
+
+        selectedUnitList.RemoveAll(x => x.unitTeam == team);
     }
 
     private void SelectUnit(UnitManager newUnit)
@@ -57,5 +63,13 @@ public class RTSUnitManager : MonoBehaviour
     {
         newUnit.DeselectUnit();
         selectedUnitList.Remove(newUnit);
+    }
+    
+    public void AttackTo(UnitManager target)
+    {
+        foreach (var unit in selectedUnitList)
+        {
+            unit.AttackTo(target);
+        }
     }
 }

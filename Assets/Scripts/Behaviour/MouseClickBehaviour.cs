@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Consts;
 using Helpers;
 using Photon.Pun;
 using UnityEngine;
@@ -9,11 +10,13 @@ public class MouseClickBehaviour : MonoBehaviourPun
     [SerializeField] private LayerMask layerUnit;
     [SerializeField] private LayerMask layerGround;
 
+    private UnitTeam currentTeam;
     private Camera mainCamera;
     private RTSUnitManager rtsUnitManager;
 
     private void Awake()
     {
+        currentTeam = MultiplayerHelper.MasterPlayer.IsLocal ? UnitTeam.Green : UnitTeam.Red;
         mainCamera = Camera.main;
         rtsUnitManager = GetComponent<RTSUnitManager>();
     }
@@ -39,7 +42,7 @@ public class MouseClickBehaviour : MonoBehaviourPun
             }
             else
             {
-                if (!Input.GetKey(KeyCode.LeftShift)) rtsUnitManager.DeselectAll();
+                if (!Input.GetKey(KeyCode.LeftShift)) rtsUnitManager.DeselectAll(currentTeam);
             }
         }
 
@@ -49,7 +52,16 @@ public class MouseClickBehaviour : MonoBehaviourPun
             var ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
-                rtsUnitManager.MoveSelectedUnits(hit.point);
+            {
+                rtsUnitManager.MoveSelectedUnits(hit.point, currentTeam);
+            } else if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerUnit))
+            {
+                var unitManager = hit.transform.GetComponent<UnitManager>();
+                if (unitManager == null) return;
+                
+                if(unitManager.unitTeam != currentTeam)
+                    rtsUnitManager.AttackTo(unitManager);
+            }
         }
     }
 }

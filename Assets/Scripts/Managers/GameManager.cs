@@ -44,10 +44,10 @@ namespace Managers
 
         private void StartGame()
         {
-            spawner_green.AssignOwner(MultiplayerHelper.LocalPlayer);
-            base_green.AssignOwner(MultiplayerHelper.LocalPlayer);
-            spawner_red.AssignOwner(MultiplayerHelper.OtherPlayer);
-            base_red.AssignOwner(MultiplayerHelper.OtherPlayer);
+            spawner_green.AssignOwner(MultiplayerHelper.MasterPlayer);
+            base_green.AssignOwner(MultiplayerHelper.MasterPlayer);
+            spawner_red.AssignOwner(MultiplayerHelper.NonMasterPlayer);
+            base_red.AssignOwner(MultiplayerHelper.NonMasterPlayer);
         }
     }
 }

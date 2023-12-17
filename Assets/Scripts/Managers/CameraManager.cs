@@ -23,7 +23,7 @@ public class CameraManager : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        transform.position = MultiplayerHelper.LocalPlayer.IsLocal ? green_initial_position.position : red_initial_position.position;
+        transform.position = MultiplayerHelper.MasterPlayer.IsLocal ? green_initial_position.position : red_initial_position.position;
     }
 
 

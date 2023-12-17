@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 namespace Behaviour
 {
-    public class BaseBehaviour : MonoBehaviour, IPointerDownHandler
+    public class BaseBehaviour : MonoBehaviour
     {
         public GameObject optionsUI;
         private SoldierFactory _soldierFactory;
@@ -15,12 +15,16 @@ namespace Behaviour
             _soldierFactory = GetComponent<SoldierFactory>();
         }
 
-        public void OnPointerDown(PointerEventData eventData)
+        public void OnMouseDown()
         {
-            if (!gameObject.IsMine()) return;
-            Debug.Log("IsMine Works");
+            if (!gameObject.IsMine())
+            {
+                Debug.Log("not mine");
+                return;
+            }
+            Debug.Log("mine");
             // clear soldier selections
-            optionsUI.SetActive(true);
+            //optionsUI.SetActive(true);
             // set active false if anywhere else tapped
         }
     }

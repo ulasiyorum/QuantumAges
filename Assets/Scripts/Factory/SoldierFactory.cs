@@ -5,6 +5,7 @@ using Helpers;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using GameManager = Managers.GameManager;
 
@@ -14,7 +15,6 @@ public class SoldierFactory : MonoBehaviourPun
     [SerializeField] bool localPlayer;
     [SerializeField] Animation anim_doors1;
     [SerializeField] Animation anim_doors2;
-    
     public GameObject soldierPrefab_robot;
     public GameObject soldierPrefab_shooter;
     public GameObject soldierPrefab_superSoldier;
@@ -22,7 +22,7 @@ public class SoldierFactory : MonoBehaviourPun
 
     private void Awake()
     {
-        owner = localPlayer ? MultiplayerHelper.LocalPlayer : MultiplayerHelper.OtherPlayer;
+        owner = localPlayer ? MultiplayerHelper.MasterPlayer : MultiplayerHelper.NonMasterPlayer;
     }
 
     private void Update()
