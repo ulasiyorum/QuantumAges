@@ -751,7 +751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2670987329788303867
 Transform:
   m_ObjectHideFlags: 0
@@ -1081,6 +1081,9 @@ MonoBehaviour:
   unitMarker: {fileID: 5098585513107346797}
   soldierType: 0
   unitTeam: 0
+  _health: 0
+  _damage: 0
+  _range: 0
 --- !u!114 &7422056604127979572
 MonoBehaviour:
   m_ObjectHideFlags: 0

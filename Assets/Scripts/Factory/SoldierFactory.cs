@@ -5,9 +5,6 @@ using Helpers;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
-using GameManager = Managers.GameManager;
 
 public class SoldierFactory : MonoBehaviourPun
 {

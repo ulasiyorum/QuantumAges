@@ -2,8 +2,8 @@ namespace Consts
 {
     public enum SoldierEnum
     {
-        Robot,
-        Shooter,
-        SuperSoldier
+        Robot = 0,
+        Shooter = 1,
+        SuperSoldier = 2
     }
 }

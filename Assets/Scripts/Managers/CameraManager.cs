@@ -23,7 +23,12 @@ public class CameraManager : MonoBehaviourPun
     {
         if (!photonView.IsMine) return;
 
-        transform.position = MultiplayerHelper.MasterPlayer.IsLocal ? green_initial_position.position : red_initial_position.position;
+        transform.position = MultiplayerHelper.MasterPlayer.IsLocal
+            ? green_initial_position.position
+            : red_initial_position.position;
+        transform.rotation = MultiplayerHelper.MasterPlayer.IsLocal
+            ? green_initial_position.rotation
+            : red_initial_position.rotation;
     }
 
 
@@ -44,11 +49,11 @@ public class CameraManager : MonoBehaviourPun
         {
             var mouseX = Input.GetAxis("Mouse X");
             var mouseY = Input.GetAxis("Mouse Y");
-
             var initialRotation = transform.rotation;
 
-            transform.Rotate(Vector3.up, mouseX * panSpeed, 0);
-            transform.Rotate(Vector3.left, mouseY * panSpeed, 0);
+            transform.Rotate(Vector3.up, mouseX * panSpeed, Space.World);
+
+            transform.Rotate(Vector3.left, mouseY * panSpeed, Space.Self);
 
             var newEulerAngles = transform.rotation.eulerAngles;
             newEulerAngles.z = initialRotation.eulerAngles.z;

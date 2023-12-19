@@ -54,7 +54,8 @@ public class MouseClickBehaviour : MonoBehaviourPun
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerGround))
             {
                 rtsUnitManager.MoveSelectedUnits(hit.point, currentTeam);
-            } else if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerUnit))
+            } 
+            else if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerUnit))
             {
                 var unitManager = hit.transform.GetComponent<UnitManager>();
                 if (unitManager == null) return;

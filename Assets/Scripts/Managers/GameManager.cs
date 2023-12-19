@@ -13,8 +13,6 @@ namespace Managers
         public GameObject base_green;
         public GameObject base_red;
         
-        public GameObject greenUnitMarker;
-        public GameObject redUnitMarker;
         private void Awake()
         {
             if (instance == null)
