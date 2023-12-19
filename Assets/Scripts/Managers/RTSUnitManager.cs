@@ -55,6 +55,12 @@ public class RTSUnitManager : MonoBehaviour
 
     private void SelectUnit(UnitManager newUnit)
     {
+        if(newUnit.unitTeam == UnitTeam.Green)
+            MachineryBehaviour.greenMachine.DeSelect();
+        
+        else if(newUnit.unitTeam == UnitTeam.Red)
+            MachineryBehaviour.redMachine.DeSelect();
+        
         newUnit.SelectUnit();
         selectedUnitList.Add(newUnit);
     }
