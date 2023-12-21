@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Consts;
+using Helpers;
+using Photon.Pun.Demo.PunBasics;
 using UnityEngine;
 using UnityEngine.AI;
+using PlayerManager = Managers.Abstract.PlayerManager;
 
 public class MachineryBehaviour : MonoBehaviour
 {
@@ -13,10 +16,10 @@ public class MachineryBehaviour : MonoBehaviour
     private bool attacking = false;
     private Animator animator;
     private NavMeshAgent agent;
-    private CrystalBehaviour crystalToAttack;
+    private Resource crystalToAttack;
 
-    public static MachineryBehaviour greenMachine = GameObject.Find("GreenMachinery").GetComponent<MachineryBehaviour>();
-    public static MachineryBehaviour redMachine = GameObject.Find("RedMachinery").GetComponent<MachineryBehaviour>();
+    public static MachineryBehaviour greenMachine;
+    public static MachineryBehaviour redMachine;
 
     public UnitTeam unitTeam;
     [SerializeField] GameObject unitMarker;
@@ -27,11 +30,25 @@ public class MachineryBehaviour : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         _camera = Camera.main;
         animator = GetComponent<Animator>();
+
+        if (unitTeam == UnitTeam.Green)
+        {
+            greenMachine = this;
+            gameObject.AssignOwner(MultiplayerHelper.MasterPlayer);
+        }
+        else
+        {
+            redMachine = this;
+            gameObject.AssignOwner(MultiplayerHelper.NonMasterPlayer);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!gameObject.IsMine())
+            return;
+        
         if (Input.GetMouseButton(0))
         {
             RaycastHit hit;
@@ -54,44 +71,79 @@ public class MachineryBehaviour : MonoBehaviour
         {
             RaycastHit hit;
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
-            
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, LayerMask.GetMask("Ground")))
             {
-                if (hit.transform.gameObject == gameObject)
-                {
-                    Select();
-                }
-            }
-        }
-        
-        else if(isSelected && Input.GetMouseButtonDown(1))
-        {
-            RaycastHit hit;
-            var ray = _camera.ScreenPointToRay(Input.mousePosition);
-            
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
-            {
-                crystalToAttack = hit.transform.GetComponent<CrystalBehaviour>();
                 SetDestination(hit.point);
                 SetMoving(true);
+                if (crystalToAttack is not null)
+                {
+                    crystalToAttack.AbortCollecting();
+                    crystalToAttack = null;
+                }
+            }
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                crystalToAttack = hit.transform.GetComponent<Resource>();
+                crystalToAttack.CollectResource(this, hit.point);
             }
         }
 
-        if (crystalToAttack is not null)
+        if (crystalToAttack is not null && !attacking)
         {
             if (Vector3.Distance(transform.position, crystalToAttack.transform.position) < 2f)
             {
-                SetDestination(transform.position);
+                agent.StopAgent();
                 SetMoving(false);
                 SetAttacking(true);
-                crystalToAttack.StartBreaking(this);
+                StartCoroutine(StartCollecting());
             }
         }
     }
 
-    public void EndBreaking()
+    public void CollectResource(Resource resource, Vector3 pointClicked)
     {
+        SetDestination(pointClicked);
+        SetMoving(true);
+        crystalToAttack = resource;
+    }
+
+    private IEnumerator StartCollecting()
+    {
+        if(crystalToAttack is null) yield break;
+        
+        int collectionTime = (int) crystalToAttack.resourceType;
+
+        yield return new WaitForSeconds(collectionTime);
+        
+        if(crystalToAttack is null) yield break;
+
+        int colIndex = crystalToAttack.GetCollectionIndex();
+        
+        if(colIndex == -1) yield break;
+        EndBreaking(colIndex);
+    }
+
+    public void EndBreaking(int colIndex)
+    {
+        crystalToAttack.EndBreaking(colIndex);
+
+        if (unitTeam == UnitTeam.Green)
+        {
+            if(crystalToAttack.resourceType == ResourceType.BlueCrystal)
+                PlayerManager.green_manager.blue_crystal_balance++;
+            else
+                PlayerManager.green_manager.green_crystal_balance++;
+        }
+        else
+        {
+            if(crystalToAttack.resourceType == ResourceType.BlueCrystal)
+                PlayerManager.red_manager.blue_crystal_balance++;
+            else
+                PlayerManager.red_manager.green_crystal_balance++;
+        }
+        
         SetAttacking(false);
+        crystalToAttack = null;
     }
     
     private void SetMoving(bool value)

@@ -1,3 +1,4 @@
+/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +15,8 @@ public class MainEvents : MonoBehaviour
     private float resourceRespawnTime = 10f;
     private float resourceTimer = 0f;
 
-    private Resource currentResource; // Soldier tarafýndan toplanan kaynaðý saklamak için deðiþken
-
+    private Resource currentResource; // Soldier tarafï¿½ndan toplanan kaynaï¿½ï¿½ saklamak iï¿½in deï¿½iï¿½ken
+    
 
     void Update()
     {
@@ -104,7 +105,7 @@ public class MainEvents : MonoBehaviour
 
                 }
             }
-            // Sað týklama ile "Ground" katmanýndaki bir obje mi seçildi?
+            // Saï¿½ tï¿½klama ile "Ground" katmanï¿½ndaki bir obje mi seï¿½ildi?
             else if (Physics.Raycast(ray, out hit, 100.0f, LayerMask.GetMask("Ground")))
             {
                 Soldier soldier = current_selected.GetComponentInParent<Soldier>();
@@ -118,10 +119,10 @@ public class MainEvents : MonoBehaviour
 
     void CollectResource(Soldier soldier, Resource resource)
     {
-        // Kaynaðý topla
+        // Kaynaï¿½ï¿½ topla
         resource.collectResource(soldier);
 
-        // Kaynaðý sakla ve tekrar oluþma süresini baþlat
+        // Kaynaï¿½ï¿½ sakla ve tekrar oluï¿½ma sï¿½resini baï¿½lat
         currentResource = resource;
         resourceTimer = resourceRespawnTime;
     }
@@ -131,14 +132,14 @@ public class MainEvents : MonoBehaviour
         GameObject resourceObject = Instantiate(Resources.Load("ResourcePrefab"), Vector3.zero, Quaternion.identity) as GameObject;
         Resource newResource = resourceObject.GetComponent<Resource>();
 
-        // Yeni kaynaðý baþka nesnelerle çakýþmasýný önlemek için Soldier ve Ground katmanlarýna ekleyin
+        // Yeni kaynaï¿½ï¿½ baï¿½ka nesnelerle ï¿½akï¿½ï¿½masï¿½nï¿½ ï¿½nlemek iï¿½in Soldier ve Ground katmanlarï¿½na ekleyin
         if (newResource != null)
         {
             newResource.gameObject.layer = LayerMask.NameToLayer("Soldier");
             
         }
 
-        // Kaynaðýn tekrar oluþma süresini sýfýrla
+        // Kaynaï¿½ï¿½n tekrar oluï¿½ma sï¿½resini sï¿½fï¿½rla
         resourceTimer = 0f;
 
         // Kaynak nesnesini temizle
@@ -147,11 +148,12 @@ public class MainEvents : MonoBehaviour
 
     public void AddCollectedResource(float amount)
     {
-        // Toplanan kaynak miktarýný kaynak dizisine ekleyebilir veya baþka bir iþlem yapabilirsiniz.
-        // Bu örnekte kaynaklarý sýfýrdan baþlatýyorum, sizin senaryonuza göre uygun iþlemleri yapmalýsýnýz.
+        // Toplanan kaynak miktarï¿½nï¿½ kaynak dizisine ekleyebilir veya baï¿½ka bir iï¿½lem yapabilirsiniz.
+        // Bu ï¿½rnekte kaynaklarï¿½ sï¿½fï¿½rdan baï¿½latï¿½yorum, sizin senaryonuza gï¿½re uygun iï¿½lemleri yapmalï¿½sï¿½nï¿½z.
         resources[0] += amount;
     }
 }
+*/
 
 
 

@@ -1,3 +1,4 @@
+/*
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,7 +50,7 @@ public class Soldier : MonoBehaviour
             {
                 resource_remaining += Time.deltaTime * 2f;
 
-                // Toplanan miktarý güncelle
+                // Toplanan miktarï¿½ gï¿½ncelle
                 collectedResourceAmount = resource_remaining;
             }
             else
@@ -63,13 +64,13 @@ public class Soldier : MonoBehaviour
     }
      private void SendCollectedResource()
     {
-        // Toplanan miktarý MainEvents scriptine iletmek için çaðrý yap
+        // Toplanan miktarï¿½ MainEvents scriptine iletmek iï¿½in ï¿½aï¿½rï¿½ yap
         if (mainEvents != null)
         {
             mainEvents.AddCollectedResource(collectedResourceAmount);
         }
 
-        // Toplanan miktarý sýfýrla
+        // Toplanan miktarï¿½ sï¿½fï¿½rla
         collectedResourceAmount = 0f;
     }
 
@@ -91,3 +92,4 @@ public class Soldier : MonoBehaviour
 
 
 }
+*/
