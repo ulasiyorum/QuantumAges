@@ -1,15 +1,21 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Consts;
 using Helpers;
+using Managers.Abstract;
 using Photon.Pun.Demo.PunBasics;
 using UnityEngine;
 using UnityEngine.AI;
 using PlayerManager = Managers.Abstract.PlayerManager;
 
-public class MachineryBehaviour : MonoBehaviour
+public class MachineryBehaviour : MonoBehaviour, IDamagable
 {
+    private Guid id = Guid.NewGuid();
+    
+    private float health = 100;
+    private Vector3 spawnPos;
     public bool isSelected = false;
     private Camera _camera;
     private bool moving = false;
@@ -27,6 +33,7 @@ public class MachineryBehaviour : MonoBehaviour
     
     void Start()
     {
+        spawnPos = transform.position;
         agent = GetComponent<NavMeshAgent>();
         _camera = Camera.main;
         animator = GetComponent<Animator>();
@@ -79,18 +86,20 @@ public class MachineryBehaviour : MonoBehaviour
                 {
                     crystalToAttack.AbortCollecting();
                     crystalToAttack = null;
+                    StopCoroutine("StartCollecting");
                 }
             }
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
                 crystalToAttack = hit.transform.GetComponent<Resource>();
-                crystalToAttack.CollectResource(this, hit.point);
+                if(crystalToAttack is not null)
+                    crystalToAttack.CollectResource(this, hit.point);
             }
         }
 
         if (crystalToAttack is not null && !attacking)
         {
-            if (Vector3.Distance(transform.position, crystalToAttack.transform.position) < 2f)
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
                 agent.StopAgent();
                 SetMoving(false);
@@ -179,5 +188,25 @@ public class MachineryBehaviour : MonoBehaviour
     public void SetDestination(Vector3 destination)
     {
         agent.SetDestination(destination);
+    }
+
+    public Guid GetId()
+    {
+        return id;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        transform.position = spawnPos;
+        health = 100;
     }
 }

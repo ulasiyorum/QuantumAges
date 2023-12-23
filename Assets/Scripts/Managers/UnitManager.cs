@@ -3,10 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Consts;
+using Helpers;
+using Managers.Abstract;
 using UnityEngine;
 using UnityEngine.AI;
-public class UnitManager : SoldierAnimator
+public class UnitManager : SoldierAnimator, IDamagable
 {
+    private Guid id = Guid.NewGuid();
+    
     public GameObject unitMarker;
     private NavMeshAgent agent;
     public SoldierEnum soldierType;
@@ -15,7 +19,7 @@ public class UnitManager : SoldierAnimator
     private bool isAttacking;
     private bool isDead;
     private bool isIdle;
-    
+    private IDamagable currentTarget;
     public float _health;
     public float _damage;
     public float _range;
@@ -79,32 +83,79 @@ public class UnitManager : SoldierAnimator
         agent.SetDestination(end);
         isMoving = true;
     }
-
-    public void AttackTo(UnitManager target)
+    public void SetTarget(IDamagable target)
     {
+        currentTarget = target;
+
+        if (target == null) return;
+        
+        if(target.GetType() == typeof(MachineryBehaviour))
+            StartCoroutine(AttackTo((MachineryBehaviour)target));
+        
+        else if(target.GetType() == typeof(UnitManager))
+            StartCoroutine(AttackTo((UnitManager)target));
+    }
+    public IEnumerator AttackTo(UnitManager target, float? length = null)
+    {
+        if(currentTarget.GetId() != target.GetId())
+            yield break;
+        
+        var targetPosition = target.transform.position;
+        var distance = Vector3.Distance(transform.position, targetPosition);
+        if (distance > _range)
+        {
+            MoveTo(targetPosition);
+            yield break;
+        }
+
+        length ??= GetCurrentAnimationLength();
+        target.TakeDamage(_damage);
+        agent.StopAgent();
+        isMoving = false;
+        isAttacking = true;
+        OnAttack();
+        StartCoroutine(AttackTo(target, length));
+    }
+    
+    public IEnumerator AttackTo(MachineryBehaviour target, float? length = null)
+    {
+        if (currentTarget.GetId() != target.GetId())
+            yield break;
+        
         var targetPosition = target.transform.position;
         var distance = Vector3.Distance(transform.position, targetPosition);
         if (distance > _range)
         {
             MoveTo(targetPosition - transform.forward * _range);
-            return;
+            yield break;
         }
-        
+        length ??= GetCurrentAnimationLength();
+        target.TakeDamage(_damage);
         isAttacking = true;
         OnAttack();
-        StartCoroutine(target.TakeDamage(_damage, GetCurrentAnimationLength()));
+        StartCoroutine(AttackTo(target, length.Value));
     }
-    
-    public IEnumerator TakeDamage(float damage, float seconds)
+
+    public Guid GetId()
     {
-        yield return new WaitForSeconds(seconds);
+        return id;
+    }
+
+    public void TakeDamage(float damage)
+    {
         _health -= damage;
         if (_health <= 0)
         {
             isDead = true;
-            yield break;
         }
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+            return;
         
-        yield return TakeDamage(damage, seconds);
+        agent.StopAgent();
+        isMoving = false;
     }
 }

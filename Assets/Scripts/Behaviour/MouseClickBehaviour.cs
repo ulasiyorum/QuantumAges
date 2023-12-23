@@ -58,10 +58,17 @@ public class MouseClickBehaviour : MonoBehaviourPun
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerUnit))
             {
                 var unitManager = hit.transform.GetComponent<UnitManager>();
-                if (unitManager == null) return;
-                
-                if(unitManager.unitTeam != currentTeam)
-                    rtsUnitManager.AttackTo(unitManager);
+                if (unitManager == null)
+                {
+                    var machineryBehaviour = hit.transform.GetComponent<MachineryBehaviour>();
+                    if(machineryBehaviour != null && machineryBehaviour.unitTeam != currentTeam)
+                        rtsUnitManager.AttackTo(machineryBehaviour);
+                }
+                else
+                {
+                    if(unitManager.unitTeam != currentTeam)
+                        rtsUnitManager.AttackTo(unitManager);
+                }
             }
         }
     }

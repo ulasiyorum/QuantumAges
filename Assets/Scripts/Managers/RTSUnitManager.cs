@@ -42,7 +42,10 @@ public class RTSUnitManager : MonoBehaviour
     public void MoveSelectedUnits(Vector3 end, UnitTeam team)
     {
         foreach (var t in selectedUnitList.Where(x => x.unitTeam == team))
+        {
+            t.SetTarget(null);
             t.MoveTo(end);
+        }
     }
 
     public void DeselectAll(UnitTeam team)
@@ -75,7 +78,15 @@ public class RTSUnitManager : MonoBehaviour
     {
         foreach (var unit in selectedUnitList)
         {
-            unit.AttackTo(target);
+            unit.SetTarget(target);
+        }
+    }
+    
+    public void AttackTo(MachineryBehaviour target)
+    {
+        foreach (var unit in selectedUnitList)
+        {
+            unit.SetTarget(target);
         }
     }
 }
