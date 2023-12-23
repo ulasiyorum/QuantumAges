@@ -12,7 +12,7 @@ using PlayerManager = Managers.Abstract.PlayerManager;
 
 public class MachineryBehaviour : MonoBehaviour, IDamagable
 {
-    private Guid id = Guid.NewGuid();
+    private readonly Guid id = Guid.NewGuid();
     
     private float health = 100;
     private Vector3 spawnPos;
@@ -23,10 +23,10 @@ public class MachineryBehaviour : MonoBehaviour, IDamagable
     private Animator animator;
     private NavMeshAgent agent;
     private Resource crystalToAttack;
-
     public static MachineryBehaviour greenMachine;
     public static MachineryBehaviour redMachine;
 
+    
     public UnitTeam unitTeam;
     [SerializeField] GameObject unitMarker;
     // Start is called before the first frame update
@@ -86,20 +86,24 @@ public class MachineryBehaviour : MonoBehaviour, IDamagable
                 {
                     crystalToAttack.AbortCollecting();
                     crystalToAttack = null;
-                    StopCoroutine("StartCollecting");
+                    StopCoroutine(nameof(StartCollecting));
+                    SetAttacking(false);
                 }
             }
             if (Physics.Raycast(ray, out hit, Mathf.Infinity))
             {
                 crystalToAttack = hit.transform.GetComponent<Resource>();
-                if(crystalToAttack is not null)
+                if (crystalToAttack is not null)
+                {
                     crystalToAttack.CollectResource(this, hit.point);
+                    return;
+                }
             }
         }
 
         if (crystalToAttack is not null && !attacking)
         {
-            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+            if (agent.remainingDistance < 5f)
             {
                 agent.StopAgent();
                 SetMoving(false);
@@ -109,9 +113,9 @@ public class MachineryBehaviour : MonoBehaviour, IDamagable
         }
     }
 
-    public void CollectResource(Resource resource, Vector3 pointClicked)
+    public void CollectResource(Resource resource, Vector3 pos)
     {
-        SetDestination(pointClicked);
+        SetDestination(pos);
         SetMoving(true);
         crystalToAttack = resource;
     }
@@ -119,14 +123,13 @@ public class MachineryBehaviour : MonoBehaviour, IDamagable
     private IEnumerator StartCollecting()
     {
         if(crystalToAttack is null) yield break;
-        
-        int collectionTime = (int) crystalToAttack.resourceType;
 
+        int collectionTime = (int)crystalToAttack.resourceType;
+        int colIndex = crystalToAttack.GetCollectionIndex();
+        transform.rotation = crystalToAttack.GetTargetRotation(colIndex, transform.position);
         yield return new WaitForSeconds(collectionTime);
         
         if(crystalToAttack is null) yield break;
-
-        int colIndex = crystalToAttack.GetCollectionIndex();
         
         if(colIndex == -1) yield break;
         EndBreaking(colIndex);

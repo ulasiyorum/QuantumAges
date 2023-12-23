@@ -1,3 +1,4 @@
+using Consts;
 using UnityEngine;
 
 namespace Managers.Abstract
@@ -9,5 +10,21 @@ namespace Managers.Abstract
         
         public int green_crystal_balance = 0;
         public int blue_crystal_balance = 0;
+
+        public bool Cashout(int money, ResourceType type)
+        {
+            if (type == ResourceType.GreenCrystal)
+            {
+                if (green_crystal_balance < money) return false;
+                green_crystal_balance -= money;
+            }
+            else
+            {
+                if (blue_crystal_balance < money) return false;
+                blue_crystal_balance -= money;
+            }
+
+            return true;
+        }
     }
 }

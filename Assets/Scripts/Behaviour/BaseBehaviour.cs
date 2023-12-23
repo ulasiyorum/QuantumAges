@@ -1,6 +1,8 @@
 using System;
+using System.Threading.Tasks;
 using Consts;
 using Helpers;
+using Managers.Abstract;
 using Photon.Pun;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,7 +15,6 @@ namespace Behaviour
         private SoldierFactory _soldierFactory;
 
         private Camera _camera;
-        //public PlayerManager playerManager;
 
         private void Start()
         {
@@ -54,11 +55,19 @@ namespace Behaviour
             }
         }
 
-        public void SpawnUnit(int unitType)
+        public async Task SpawnUnit(int unitType)
         {
-            SoldierEnum soldierType = (SoldierEnum) unitType;
+            if (!photonView.IsMine) return;
             
-            var soldier = _soldierFactory.SpawnSoldier(soldierType); // ?? soldier
+            SoldierEnum soldierType = (SoldierEnum) unitType;
+
+            var soldier = await _soldierFactory.SpawnSoldier(soldierType);
+            
+            if (soldier == null)
+            {
+                Debug.LogError("Soldier is null");
+                return;
+            }
         }
     }
 }

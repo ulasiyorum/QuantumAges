@@ -1,11 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Consts;
+using Helpers;
 using UnityEngine;
 
 public class Resource : MonoBehaviour
 {
+    public Guid id = Guid.NewGuid();
     public ResourceType resourceType;
     public GameObject[] collection_points;
     private bool isRespawning = false;
@@ -40,7 +43,7 @@ public class Resource : MonoBehaviour
         for (int i = 0; i < collection_points.Length; i++)
         {
             float distance = Vector3.Distance(collection_points[i].transform.position, pointClicked);
-            if (distance < minDistance)
+            if (distance < minDistance && !collected_points[i])
             {
                 minDistance = distance;
                 minIndex = i;
@@ -59,6 +62,11 @@ public class Resource : MonoBehaviour
         }
         
         return false;
+    }
+
+    public Quaternion GetTargetRotation(int index, Vector3 point)
+    {
+        return Quaternion.LookRotation(collection_points[index].transform.position - point);
     }
     
     public void EndBreaking(int collectionIndex)
@@ -100,9 +108,12 @@ public class Resource : MonoBehaviour
     {
         isRespawning = true;
         
-        if(collected_points.Any(x => x))
+        if (!collected_points.Any(x => x))
+        {
+            isRespawning = false;
             yield break;
-        
+        }
+
         int respawnTime = (int)resourceType * 3;
         yield return new WaitForSeconds(respawnTime);
         

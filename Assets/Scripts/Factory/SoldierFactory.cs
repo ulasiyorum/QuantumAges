@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Consts;
 using Helpers;
+using Managers;
+using Models;
 using Photon.Pun;
+using Photon.Pun.Demo.PunBasics;
 using Photon.Realtime;
 using UnityEngine;
+using PlayerManager = Managers.Abstract.PlayerManager;
 
 public class SoldierFactory : MonoBehaviourPun
 {
@@ -16,7 +21,16 @@ public class SoldierFactory : MonoBehaviourPun
     public GameObject soldierPrefab_shooter;
     public GameObject soldierPrefab_superSoldier;
     private Player owner; // Green => LocalPlayer
+    
+    public static List<PriceModel> _prices = new List<PriceModel>
+    {
+        new PriceModel(3, ResourceType.GreenCrystal, SoldierEnum.Robot),
+        new PriceModel(7, ResourceType.GreenCrystal, SoldierEnum.Shooter),
+        new PriceModel(2, ResourceType.BlueCrystal, SoldierEnum.SuperSoldier),
+    };
 
+
+    private bool testMode = false;
     private void Awake()
     {
         owner = localPlayer ? MultiplayerHelper.MasterPlayer : MultiplayerHelper.NonMasterPlayer;
@@ -24,6 +38,10 @@ public class SoldierFactory : MonoBehaviourPun
 
     private void Update()
     {
+        #if UNITY_EDITOR
+
+        if (!testMode) return;
+        
         if (Input.GetKeyDown(KeyCode.J))
             SpawnSoldier(SoldierEnum.Robot);
 
@@ -32,10 +50,53 @@ public class SoldierFactory : MonoBehaviourPun
 
         if (Input.GetKeyDown(KeyCode.K))
             SpawnSoldier(SoldierEnum.Shooter);
+        #endif
     }
 
-    public async Task<GameObject> SpawnSoldier(SoldierEnum soldier)
+    public async Task<SpawnedSoldierModel> SpawnSoldier(SoldierEnum soldier)
     {
+        PriceModel priceModel;
+        bool result = false;
+        var unitTeam = owner.IsMasterClient ? UnitTeam.Green : UnitTeam.Red;
+        
+        switch (unitTeam)
+        {
+            case UnitTeam.Green:
+                priceModel = _prices.Find(x => x.SoldierType == soldier);
+
+                if (priceModel is null)
+                    throw new ArgumentOutOfRangeException($"{soldier.ToString()} is not set in PriceModel");
+
+                result = PlayerManager.green_manager.Cashout(priceModel.Crystal, priceModel.ResourceType);
+
+                if (!result)
+                {
+                    PopUp.Error("Not enough resources");
+                }
+                
+                break;
+            case UnitTeam.Red:
+                priceModel = _prices.Find(x => x.SoldierType == soldier);
+
+                if (priceModel is null)
+                    throw new ArgumentOutOfRangeException($"{soldier.ToString()} is not set in PriceModel");
+
+                result = PlayerManager.red_manager.Cashout(priceModel.Crystal, priceModel.ResourceType);
+
+                if (!result)
+                {
+                    PopUp.Error("Not enough resources");
+                }
+                
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException("Must be either red or green");
+        }
+
+        if (!result)
+            return null;
+        
         anim_doors1.CrossFade("Structure_v3_open", 0.1f);
         anim_doors2.CrossFade("Structure_v3_open", 0.1f);
         var animLength = anim_doors1.GetClip("Structure_v3_open").length + 0.6f;
@@ -55,7 +116,13 @@ public class SoldierFactory : MonoBehaviourPun
         var unitComponent = go.GetComponent<UnitManager>();
         unitComponent.soldierType = soldier;
         go.AssignOwner(owner);
-        unitComponent.unitTeam = owner.IsLocal ? UnitTeam.Green : UnitTeam.Red;
-        return go;
+        unitComponent.unitTeam = unitTeam;
+
+        
+        return new SpawnedSoldierModel
+        {
+            unitManager = unitComponent,
+            spawnedSoldier = go
+        };
     }
 }

@@ -35,7 +35,7 @@ public class CameraManager : MonoBehaviourPun
     // Update is called once per frame
     private void Update()
     {
-        //if (!photonView.IsMine) return;
+        if (!photonView.IsMine) return;
         var pos = transform.position;
         if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness)
             pos += transform.forward * (panSpeed * Time.deltaTime);

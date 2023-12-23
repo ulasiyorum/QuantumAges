@@ -41,11 +41,23 @@ public class RTSUnitManager : MonoBehaviour
 
     public void MoveSelectedUnits(Vector3 end, UnitTeam team)
     {
+        int i = 0;
         foreach (var t in selectedUnitList.Where(x => x.unitTeam == team))
         {
+            int count = selectedUnitList.Count(x => x.unitTeam == team);
             t.SetTarget(null);
-            t.MoveTo(end);
+            t.MoveTo(CalculatePosition(end, count, i));
+            i++;
         }
+    }
+
+    private Vector3 CalculatePosition(Vector3 targetPos, int totalUnits, int currentUnit)
+    {
+        float unitSpacing = 2.0f;
+        float formationLength = (totalUnits * unitSpacing) / 2;
+        Vector3 offset = new Vector3(formationLength, 0, 0);
+        Vector3 formationPos = targetPos - offset + new Vector3(currentUnit * unitSpacing, 0, 0);
+        return formationPos;
     }
 
     public void DeselectAll(UnitTeam team)

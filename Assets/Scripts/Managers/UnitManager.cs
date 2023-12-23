@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Consts;
 using Helpers;
@@ -9,7 +8,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public class UnitManager : SoldierAnimator, IDamagable
 {
-    private Guid id = Guid.NewGuid();
+    private readonly Guid id = Guid.NewGuid();
     
     public GameObject unitMarker;
     private NavMeshAgent agent;
@@ -148,14 +147,5 @@ public class UnitManager : SoldierAnimator, IDamagable
         {
             isDead = true;
         }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.gameObject.CompareTag("Ground"))
-            return;
-        
-        agent.StopAgent();
-        isMoving = false;
     }
 }
