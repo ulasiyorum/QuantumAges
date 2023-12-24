@@ -8,6 +8,8 @@ TagManager:
   - Resource
   - GreenMachine
   - RedMachine
+  - Base
+  - Spawner
   layers:
   - Default
   - TransparentFX

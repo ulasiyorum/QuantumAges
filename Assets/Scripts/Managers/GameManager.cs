@@ -58,6 +58,8 @@ namespace Managers
             await Task.Delay(1000);
             MachineryBehaviour.greenMachine.gameObject.AssignOwner(MultiplayerHelper.MasterPlayer);
             MachineryBehaviour.redMachine.gameObject.AssignOwner(MultiplayerHelper.NonMasterPlayer);
+            await Task.Delay(1500);
+            PopUp.Success("Welcome to the Exoterra planet!");
         }
     }
 }

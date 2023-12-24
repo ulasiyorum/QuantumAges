@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Consts;
+using Managers.Abstract;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -88,7 +89,7 @@ public class RTSUnitManager : MonoBehaviour
     
     public void AttackTo(UnitManager target)
     {
-        foreach (var unit in selectedUnitList)
+        foreach (var unit in selectedUnitList.Where(x => x.unitTeam != target.unitTeam))
         {
             unit.SetTarget(target, target.unitTeam);
         }
@@ -96,10 +97,22 @@ public class RTSUnitManager : MonoBehaviour
     
     public void AttackTo(MachineryBehaviour target)
     {
-        Debug.Log("gonna attack");
-        foreach (var unit in selectedUnitList)
+        foreach (var unit in selectedUnitList.Where(x => x.unitTeam != target.unitTeam))
         {
             unit.SetTarget(target, target.unitTeam);
         }
+    }
+
+    public void AttackTo(Vector3 target, UnitTeam targeter)
+    {
+        foreach (var unit in selectedUnitList.Where(x => x.unitTeam == targeter))
+        {
+            if(targeter == UnitTeam.Green)
+                unit.SetTarget(PlayerManager.red_manager, UnitTeam.Red, target);
+            
+            else if(targeter == UnitTeam.Red)
+                unit.SetTarget(PlayerManager.green_manager, UnitTeam.Green, target);
+        }
+
     }
 }

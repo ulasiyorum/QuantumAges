@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using Consts;
 using Helpers;
+using Managers;
+using Managers.Abstract;
 using Photon.Pun;
 using UnityEngine;
 
@@ -67,6 +69,61 @@ public class MouseClickBehaviour : MonoBehaviourPun
                 {
                     if(unitManager.unitTeam != currentTeam)
                         rtsUnitManager.AttackTo(unitManager);
+                }
+            }
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity))
+            {
+                if (hit.transform.CompareTag("Base"))
+                {
+                    if (currentTeam != UnitTeam.Green)
+                    {
+                        if(PlayerManager.green_manager.health_base > 0)
+                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+                        else
+                            PopUp.Warning("Base is already destroyed");
+                    }
+                    else
+                    {
+                        if(PlayerManager.red_manager.health_base > 0)
+                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+                        else
+                            PopUp.Warning("Base is already destroyed");
+                    }
+                }
+
+                if (hit.transform.CompareTag("Spawner"))
+                {
+                    if (currentTeam != UnitTeam.Green)
+                    {
+                        if (PlayerManager.green_manager.health_base > 0)
+                        {
+                            PopUp.Warning("You must destroy base first");
+                            return;
+                        }
+                        
+                        if(PlayerManager.green_manager.health_spawner > 0)
+                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+                        else
+                            GameOverBehaviour.GameOver(UnitTeam.Green, currentTeam, 
+                                currentTeam == UnitTeam.Green ? PlayerManager.green_manager.killCount : PlayerManager.red_manager.killCount
+                            );
+                    }
+                    
+                    else
+                    {
+                        if (PlayerManager.red_manager.health_base > 0)
+                        {
+                            PopUp.Warning("You must destroy base first");
+                            return;
+                        }
+                        
+                        if(PlayerManager.red_manager.health_spawner > 0)
+                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+                        else
+                            GameOverBehaviour.GameOver(UnitTeam.Green, currentTeam, 
+                                currentTeam == UnitTeam.Green ? PlayerManager.green_manager.killCount : PlayerManager.red_manager.killCount
+                                );
+                    }
                 }
             }
         }
