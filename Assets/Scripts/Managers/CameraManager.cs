@@ -6,7 +6,7 @@ using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class CameraManager : MonoBehaviourPun
+public class CameraManager : MonoBehaviour
 {
     public float panSpeed = 100f;
     public float panBorderThickness = 10f;
@@ -21,8 +21,6 @@ public class CameraManager : MonoBehaviourPun
 
     private void Awake()
     {
-        if (!photonView.IsMine) return;
-
         transform.position = MultiplayerHelper.MasterPlayer.IsLocal
             ? green_initial_position.position
             : red_initial_position.position;
@@ -35,7 +33,6 @@ public class CameraManager : MonoBehaviourPun
     // Update is called once per frame
     private void Update()
     {
-        if (!photonView.IsMine) return;
         var pos = transform.position;
         if (Input.GetKey("w") || Input.mousePosition.y >= Screen.height - panBorderThickness)
             pos += transform.forward * (panSpeed * Time.deltaTime);

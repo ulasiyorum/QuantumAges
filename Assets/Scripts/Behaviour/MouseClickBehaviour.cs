@@ -5,7 +5,7 @@ using Helpers;
 using Photon.Pun;
 using UnityEngine;
 
-public class MouseClickBehaviour : MonoBehaviourPun
+public class MouseClickBehaviour : MonoBehaviour
 {
     [SerializeField] private LayerMask layerUnit;
     [SerializeField] private LayerMask layerGround;
@@ -23,8 +23,6 @@ public class MouseClickBehaviour : MonoBehaviourPun
 
     private void Update()
     {
-        if (!photonView.IsMine) return;
-        
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit hit;

@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace Behaviour
 {
-    public class BaseBehaviour : MonoBehaviourPun
+    public class BaseBehaviour : MonoBehaviour
     {
         public GameObject optionsUI;
         private SoldierFactory _soldierFactory;
@@ -27,8 +27,7 @@ namespace Behaviour
         }
         private void Update()
         {
-            if(!photonView.IsMine) return;
-            if (!gameObject.IsMine())
+            if (_soldierFactory.owner?.UserId != PhotonNetwork.LocalPlayer.UserId)
             {
                 return;
             }
@@ -57,8 +56,6 @@ namespace Behaviour
 
         public async Task SpawnUnit(int unitType)
         {
-            if (!photonView.IsMine) return;
-            
             SoldierEnum soldierType = (SoldierEnum) unitType;
 
             var soldier = await _soldierFactory.SpawnSoldier(soldierType);

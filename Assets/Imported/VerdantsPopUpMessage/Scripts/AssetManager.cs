@@ -14,9 +14,6 @@ public class AssetManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            StartPopUpMessage.Message("This is a test!", Color.black);
-        }
+
     }
 }

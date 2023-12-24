@@ -6,10 +6,12 @@ using Helpers;
 using Managers.Abstract;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
+
 public class UnitManager : SoldierAnimator, IDamagable
 {
     private readonly Guid id = Guid.NewGuid();
-    
+    public SpriteRenderer healthBar;
     public GameObject unitMarker;
     private NavMeshAgent agent;
     public SoldierEnum soldierType;
@@ -19,17 +21,29 @@ public class UnitManager : SoldierAnimator, IDamagable
     private bool isDead;
     private bool isIdle;
     private IDamagable currentTarget;
+    private float maxHealth;
     public float _health;
     public float _damage;
     public float _range;
 
     protected override void Awake()
     {
+        maxHealth = _health;
         agent = GetComponent<NavMeshAgent>();
         unitMarker.SetActive(false);
         RTSUnitManager.Instance.UnitList.Add(this);
         base.Awake();
     }
+
+    private void Update()
+    {
+        _health = Mathf.Clamp(_health, 0f, 100f);
+
+        float scaleX = _health / 100f;
+
+        healthBar.transform.localScale = new Vector3(scaleX, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+    }
+    
 
     public override Task Animate()
     {

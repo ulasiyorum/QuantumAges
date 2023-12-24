@@ -20,7 +20,7 @@ public class SoldierFactory : MonoBehaviourPun
     public GameObject soldierPrefab_robot;
     public GameObject soldierPrefab_shooter;
     public GameObject soldierPrefab_superSoldier;
-    private Player owner; // Green => LocalPlayer
+    public Player owner; // Green => MasterPlayer
     
     public static List<PriceModel> _prices = new List<PriceModel>
     {
@@ -105,9 +105,9 @@ public class SoldierFactory : MonoBehaviourPun
         var rotation = Quaternion.Euler(0, 0, 0);
         GameObject go = soldier switch
         {
-            SoldierEnum.Robot => Instantiate(soldierPrefab_robot, spawnPosition, Quaternion.identity),
-            SoldierEnum.Shooter => Instantiate(soldierPrefab_shooter, spawnPosition, Quaternion.identity),
-            SoldierEnum.SuperSoldier => Instantiate(soldierPrefab_superSoldier, spawnPosition, Quaternion.identity),
+            SoldierEnum.Robot => PhotonNetwork.Instantiate(soldierPrefab_robot.name, spawnPosition, Quaternion.identity),
+            SoldierEnum.Shooter => PhotonNetwork.Instantiate(soldierPrefab_shooter.name, spawnPosition, Quaternion.identity),
+            SoldierEnum.SuperSoldier => PhotonNetwork.Instantiate(soldierPrefab_superSoldier.name, spawnPosition, Quaternion.identity),
             _ => throw new ArgumentOutOfRangeException()
         };
         anim_doors2.CrossFade("Structure_v3_close", 0.1f);

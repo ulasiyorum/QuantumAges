@@ -37,29 +37,33 @@ public abstract class SoldierAnimator : MonoBehaviour
     protected virtual void OnMove()
     {
         AnimPlaying = true;
-        animator.Play("move");
+        animator.SetBool("move", true);
     }
     protected virtual void OnAttack() 
     {
         AnimPlaying = true;
-        animator.Play("attack");
+        animator.SetBool("attack", true);
     }
     protected virtual void OnDie()
     {
         if (hasDied) return;
         AnimPlaying = true;
-        animator.Play("die");
+        animator.SetBool("die", true);
         hasDied = true;
     }
     protected virtual void OnIdle()
     {
         AnimPlaying = true;
-        animator.Play("idle");
+        animator.SetBool("animEnd", true);
     }
     
     protected void SetAnimationTrigger(bool value)
     {
         AnimPlaying = value;
+        animator.SetBool("move", value);
+        animator.SetBool("attack", value);
+        animator.SetBool("animEnd", !value);
+        
     }
     
     protected float GetCurrentAnimationLength()

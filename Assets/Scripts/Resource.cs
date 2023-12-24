@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Consts;
 using Helpers;
+using Photon.Pun;
 using UnityEngine;
 
-public class Resource : MonoBehaviour
+public class Resource : MonoBehaviourPun
 {
     public Guid id = Guid.NewGuid();
     public ResourceType resourceType;
@@ -69,6 +70,7 @@ public class Resource : MonoBehaviour
         return Quaternion.LookRotation(collection_points[index].transform.position - point);
     }
     
+    [PunRPC]
     public void EndBreaking(int collectionIndex)
     {
         for (int i = 0; i < collection_points_usage.Length; i++)
@@ -77,6 +79,7 @@ public class Resource : MonoBehaviour
         }
         
         collected_points[collectionIndex] = true;
+        
         collection_points[collectionIndex].SetActive(false);
         
         if(!isRespawning)

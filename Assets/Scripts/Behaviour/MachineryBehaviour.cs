@@ -5,6 +5,7 @@ using System.Linq;
 using Consts;
 using Helpers;
 using Managers.Abstract;
+using Photon.Pun;
 using Photon.Pun.Demo.PunBasics;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,23 +42,26 @@ public class MachineryBehaviour : MonoBehaviour, IDamagable
         if (unitTeam == UnitTeam.Green)
         {
             greenMachine = this;
-            gameObject.AssignOwner(MultiplayerHelper.MasterPlayer);
+            //gameObject.AssignOwner(MultiplayerHelper.MasterPlayer);
         }
         else
         {
             redMachine = this;
-            gameObject.AssignOwner(MultiplayerHelper.NonMasterPlayer);
+            //gameObject.AssignOwner(MultiplayerHelper.NonMasterPlayer);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!gameObject.IsMine())
+        if (unitTeam == UnitTeam.Green && !MultiplayerHelper.MasterPlayer.IsLocal)
+            return;
+        
+        if (unitTeam == UnitTeam.Red && !(MultiplayerHelper.NonMasterPlayer?.IsLocal ?? true))
             return;
         
         if (Input.GetMouseButton(0))
-        {
+        { 
             RaycastHit hit;
             var ray = _camera.ScreenPointToRay(Input.mousePosition);
             
@@ -137,7 +141,7 @@ public class MachineryBehaviour : MonoBehaviour, IDamagable
 
     public void EndBreaking(int colIndex)
     {
-        crystalToAttack.EndBreaking(colIndex);
+        crystalToAttack.photonView.RPC("EndBreaking", RpcTarget.All , colIndex);
 
         if (unitTeam == UnitTeam.Green)
         {

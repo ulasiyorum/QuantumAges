@@ -22,8 +22,6 @@ public class BalanceViewer : MonoBehaviourPun
 
     void Update()
     {
-        if (!photonView.IsMine) return;
-
         if (type == ResourceType.GreenCrystal)
             text.text = playerManager.green_crystal_balance.ToString();
         
