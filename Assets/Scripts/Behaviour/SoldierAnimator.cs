@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Consts;
+using Photon.Pun;
 using UnityEngine;
 
-public abstract class SoldierAnimator : MonoBehaviour
+public abstract class SoldierAnimator : MonoBehaviourPun
 {
     private Animator animator;
     
@@ -66,9 +68,17 @@ public abstract class SoldierAnimator : MonoBehaviour
         
     }
     
-    protected float GetCurrentAnimationLength()
+    protected float GetCurrentAnimationLength(AnimConsts animLayer)
     {
-        var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        var clipInfo = animator.GetCurrentAnimatorClipInfo((int)animLayer);
+
+        return clipInfo[0].clip.length;
+    }
+    
+    protected float GetNextAnimationLength(AnimConsts animLayer)
+    {
+        var clipInfo = animator.GetNextAnimatorClipInfo((int)animLayer);
+
         return clipInfo[0].clip.length;
     }
 }

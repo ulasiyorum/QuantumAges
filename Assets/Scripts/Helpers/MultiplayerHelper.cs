@@ -10,6 +10,8 @@ namespace Helpers
     public static class MultiplayerHelper
     {
         public static List<Player> Players => PhotonNetwork.PlayerList.ToList();
+        
+        public static Player LocalPlayer => PhotonNetwork.LocalPlayer;
         public static Player MasterPlayer => Players.FirstOrDefault(x => x.IsMasterClient);
         public static Player NonMasterPlayer => Players.FirstOrDefault(p => !p.IsMasterClient);
         public static bool IsMine(this GameObject gameObject) => gameObject.GetPhotonView().Owner?.Equals(PhotonNetwork.LocalPlayer) ?? false;

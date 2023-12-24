@@ -1172,7 +1172,7 @@ MonoBehaviour:
   unitTeam: 0
   _health: 115
   _damage: 20
-  _range: 1.5
+  _range: 2.5
 --- !u!114 &7422056604127979572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,6 +1305,14 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
+  - SynchronizeType: 0
+    LayerIndex: 1
+  - SynchronizeType: 0
+    LayerIndex: 2
+  - SynchronizeType: 0
+    LayerIndex: 3
+  - SynchronizeType: 0
+    LayerIndex: 4
 --- !u!1 &5714000328324395545
 GameObject:
   m_ObjectHideFlags: 0

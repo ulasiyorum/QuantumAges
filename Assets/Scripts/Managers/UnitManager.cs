@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Consts;
 using Helpers;
 using Managers.Abstract;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -33,9 +34,9 @@ public class UnitManager : SoldierAnimator, IDamagable
 
     private void Update()
     {
-        _health = Mathf.Clamp(_health, 0f, 100f);
+        _health = Mathf.Clamp(_health, 0f, maxHealth);
 
-        float scaleX = _health / 100f;
+        float scaleX = _health / maxHealth;
 
         healthBar.transform.localScale = new Vector3(scaleX, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
     }
@@ -85,7 +86,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         {
             return;
         }
-        
+
         if(target.GetType() == typeof(MachineryBehaviour))
             StartCoroutine(AttackTo((MachineryBehaviour)target));
         
@@ -104,28 +105,43 @@ public class UnitManager : SoldierAnimator, IDamagable
             MoveTo(targetPosition);
             yield break;
         }
+        OnAttack();
 
-        length ??= GetCurrentAnimationLength();
+        length ??= 0.75f;
         target.TakeDamage(_damage);
+        yield return new WaitForSeconds(length.Value);
+        transform.rotation = Quaternion.LookRotation(targetPosition , transform.position);
+        
         agent.StopAgent();
         StartCoroutine(AttackTo(target, length));
     }
     
+    // [PunRPC]
+    // public void Set 
+    // {
+    //     
+    // }
+    
     public IEnumerator AttackTo(MachineryBehaviour target, float? length = null)
     {
-        if (currentTarget.GetId() != target.GetId())
+        if (currentTarget?.GetId() != target.GetId())
             yield break;
         
         var targetPosition = target.transform.position;
         var distance = Vector3.Distance(transform.position, targetPosition);
         if (distance > _range)
         {
-            MoveTo(targetPosition - transform.forward * _range);
-            yield break;
+            MoveTo(targetPosition);
+            yield return new WaitUntil(() => agent.remainingDistance <= _range);
         }
-        length ??= GetCurrentAnimationLength();
+        OnAttack();
+
+        length ??= 0.75f;
+        yield return new WaitForSeconds(length.Value);
+        agent.StopAgent();
+        transform.LookAt(target.transform);
         target.TakeDamage(_damage);
-        
+
         StartCoroutine(AttackTo(target, length.Value));
     }
 
@@ -141,5 +157,12 @@ public class UnitManager : SoldierAnimator, IDamagable
         {
             OnDie();
         }
+    }
+    
+    
+    [PunRPC]
+    public void SetUnitTeam(int team)
+    {
+        unitTeam = (UnitTeam) team;
     }
 }

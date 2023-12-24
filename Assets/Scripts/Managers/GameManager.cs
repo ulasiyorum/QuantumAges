@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Consts;
 using Helpers;
 using Photon.Pun;
@@ -47,12 +48,14 @@ namespace Managers
             PopUp.Success("All players connected, starting the game");
         }
 
-        private void StartGame()
+        private async Task StartGame()
         {
             spawner_green.AssignOwner(MultiplayerHelper.MasterPlayer);
             base_green.AssignOwner(MultiplayerHelper.MasterPlayer);
             spawner_red.AssignOwner(MultiplayerHelper.NonMasterPlayer);
             base_red.AssignOwner(MultiplayerHelper.NonMasterPlayer);
+
+            await Task.Delay(1000);
             MachineryBehaviour.greenMachine.gameObject.AssignOwner(MultiplayerHelper.MasterPlayer);
             MachineryBehaviour.redMachine.gameObject.AssignOwner(MultiplayerHelper.NonMasterPlayer);
         }

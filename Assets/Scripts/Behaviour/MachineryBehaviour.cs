@@ -14,7 +14,8 @@ using PlayerManager = Managers.Abstract.PlayerManager;
 public class MachineryBehaviour : MonoBehaviourPun, IDamagable
 {
     private readonly Guid id = Guid.NewGuid();
-    
+    public SpriteRenderer healthBar;
+
     private float health = 100;
     private Vector3 spawnPos;
     public bool isSelected = false;
@@ -54,10 +55,16 @@ public class MachineryBehaviour : MonoBehaviourPun, IDamagable
     // Update is called once per frame
     void Update()
     {
+        health = Mathf.Clamp(health, 0f, 100f);
+
+        float scaleX = health / 100f;
+
+        healthBar.transform.localScale = new Vector3(scaleX, healthBar.transform.localScale.y, healthBar.transform.localScale.z);
+        
         if (unitTeam == UnitTeam.Green && !MultiplayerHelper.MasterPlayer.IsLocal)
             return;
         
-        if (unitTeam == UnitTeam.Red && !(MultiplayerHelper.NonMasterPlayer?.IsLocal ?? true))
+        if (unitTeam == UnitTeam.Red && !(MultiplayerHelper.NonMasterPlayer?.IsLocal ?? false))
             return;
         
         if (Input.GetMouseButton(0))
@@ -213,6 +220,7 @@ public class MachineryBehaviour : MonoBehaviourPun, IDamagable
 
     private void Die()
     {
+        Debug.Log("I AM DEAD");
         transform.position = spawnPos;
         health = 100;
     }

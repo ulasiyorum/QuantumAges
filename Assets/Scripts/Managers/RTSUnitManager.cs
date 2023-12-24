@@ -96,6 +96,7 @@ public class RTSUnitManager : MonoBehaviour
     
     public void AttackTo(MachineryBehaviour target)
     {
+        Debug.Log("gonna attack");
         foreach (var unit in selectedUnitList)
         {
             unit.SetTarget(target, target.unitTeam);

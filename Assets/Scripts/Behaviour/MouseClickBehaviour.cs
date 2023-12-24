@@ -5,7 +5,7 @@ using Helpers;
 using Photon.Pun;
 using UnityEngine;
 
-public class MouseClickBehaviour : MonoBehaviour
+public class MouseClickBehaviour : MonoBehaviourPun
 {
     [SerializeField] private LayerMask layerUnit;
     [SerializeField] private LayerMask layerGround;
@@ -16,7 +16,7 @@ public class MouseClickBehaviour : MonoBehaviour
 
     private void Awake()
     {
-        currentTeam = MultiplayerHelper.MasterPlayer.IsLocal ? UnitTeam.Green : UnitTeam.Red;
+        currentTeam = PhotonNetwork.IsMasterClient ? UnitTeam.Green : UnitTeam.Red;
         mainCamera = Camera.main;
         rtsUnitManager = GetComponent<RTSUnitManager>();
     }
@@ -32,7 +32,7 @@ public class MouseClickBehaviour : MonoBehaviour
             {
                 var unitManager = hit.transform.GetComponent<UnitManager>();
                 if (unitManager == null || unitManager.unitTeam != currentTeam) return;
-
+                Debug.Log(currentTeam + " " + unitManager.unitTeam);
                 if (Input.GetKey(KeyCode.LeftShift))
                     rtsUnitManager.ShiftClickSelectUnit(unitManager);
                 else
@@ -53,12 +53,13 @@ public class MouseClickBehaviour : MonoBehaviour
             {
                 rtsUnitManager.MoveSelectedUnits(hit.point, currentTeam);
             } 
-            else if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerUnit))
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, layerUnit))
             {
                 var unitManager = hit.transform.GetComponent<UnitManager>();
                 if (unitManager == null)
                 {
                     var machineryBehaviour = hit.transform.GetComponent<MachineryBehaviour>();
+                    
                     if(machineryBehaviour != null && machineryBehaviour.unitTeam != currentTeam)
                         rtsUnitManager.AttackTo(machineryBehaviour);
                 }

@@ -53,6 +53,7 @@ public class SoldierFactory : MonoBehaviourPun
         #endif
     }
 
+    
     public async Task<SpawnedSoldierModel> SpawnSoldier(SoldierEnum soldier)
     {
         PriceModel priceModel;
@@ -112,11 +113,12 @@ public class SoldierFactory : MonoBehaviourPun
         };
         anim_doors2.CrossFade("Structure_v3_close", 0.1f);
         anim_doors1.CrossFade("Structure_v3_close", 0.1f);
-        go.transform.rotation = rotation;
         var unitComponent = go.GetComponent<UnitManager>();
+
+        go.transform.rotation = rotation;
         unitComponent.soldierType = soldier;
         go.AssignOwner(owner);
-        unitComponent.unitTeam = unitTeam;
+        unitComponent.photonView.RPC("SetUnitTeam", RpcTarget.All, (int)unitTeam);
 
         
         return new SpawnedSoldierModel

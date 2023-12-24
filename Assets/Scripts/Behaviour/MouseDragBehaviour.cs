@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Consts;
 using Photon.Pun;
 using UnityEngine;
 
@@ -7,6 +9,7 @@ public class MouseDragBehaviour : MonoBehaviour
 {
     [SerializeField] private RectTransform dragRectangle;
 
+    private UnitTeam currentTeam;
     private Rect dragRect;
     private Vector2 start = Vector2.zero;
     private Vector2 end = Vector2.zero;
@@ -18,6 +21,7 @@ public class MouseDragBehaviour : MonoBehaviour
     private float HeightScaleFactor => mainCanvasRectTransform.sizeDelta.y / Screen.height;
     private void Awake()
     {
+        currentTeam = PhotonNetwork.IsMasterClient ? UnitTeam.Green : UnitTeam.Red;
         mainCanvasRectTransform = GameObject.Find("Canvas").GetComponent<RectTransform>();
         mainCamera = Camera.main;
         rtsUnitManager = GetComponent<RTSUnitManager>();
@@ -83,7 +87,7 @@ public class MouseDragBehaviour : MonoBehaviour
 
     private void SelectUnits()
     {
-        foreach (var unit in rtsUnitManager.UnitList)
+        foreach (var unit in rtsUnitManager.UnitList.Where(x => x.unitTeam == currentTeam))
             if (dragRect.Contains(mainCamera.WorldToScreenPoint(unit.transform.position)))
                 rtsUnitManager.DragSelectUnit(unit);
     }
