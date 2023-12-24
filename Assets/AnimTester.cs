@@ -17,34 +17,29 @@ public class AnimTester : SoldierAnimator
         
     }
 
-    public override Task Animate()
+    public override void Animate()
     {
         if (Input.GetKey(KeyCode.A))
         {
             OnAttack();
-            return Task.CompletedTask;
         }
 
         if (Input.GetKey(KeyCode.D))
         {
             OnMove();
-            return Task.CompletedTask;
         }
 
         if (Input.GetKey(KeyCode.S))
         {
             OnIdle();
-            return Task.CompletedTask;
         }
 
         if (Input.GetKey(KeyCode.W))
         {
             OnDie();
-            return Task.CompletedTask;
         }
 
 
         SetAnimationTrigger(false);
-        return Task.CompletedTask;
     }
 }

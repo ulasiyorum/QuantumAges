@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using PlayerManager = Managers.Abstract.PlayerManager;
 
-public class MachineryBehaviour : MonoBehaviour, IDamagable
+public class MachineryBehaviour : MonoBehaviourPun, IDamagable
 {
     private readonly Guid id = Guid.NewGuid();
     
@@ -32,7 +32,7 @@ public class MachineryBehaviour : MonoBehaviour, IDamagable
     [SerializeField] GameObject unitMarker;
     // Start is called before the first frame update
     
-    void Start()
+    void Awake()
     {
         spawnPos = transform.position;
         agent = GetComponent<NavMeshAgent>();

@@ -412,7 +412,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 57125097}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2124299786}
+        m_TargetAssemblyTypeName: Factory.BaseFactory, Assembly-CSharp
+        m_MethodName: SpawnUnit
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &108607524
 GameObject:
   m_ObjectHideFlags: 0
@@ -1086,7 +1098,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 337161015}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2124299786}
+        m_TargetAssemblyTypeName: Factory.BaseFactory, Assembly-CSharp
+        m_MethodName: SpawnUnit
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &350336620
 GameObject:
   m_ObjectHideFlags: 0
@@ -5831,6 +5855,7 @@ GameObject:
   - component: {fileID: 1299571807}
   - component: {fileID: 1299571806}
   - component: {fileID: 1299571808}
+  - component: {fileID: 1299571809}
   m_Layer: 0
   m_Name: crystal_pack_8
   m_TagString: Untagged
@@ -5904,6 +5929,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 23.098892, y: 5.6572227, z: 8.1157875}
   m_Center: {x: -5.5113525, y: 2.6836271, z: 1.1743488}
+--- !u!114 &1299571809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299571805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 13
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1341358560
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12089,7 +12136,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents:
   - {fileID: 2977902293173304070}
@@ -12545,6 +12592,7 @@ GameObject:
   - component: {fileID: 7621405999881055338}
   - component: {fileID: 7621405999881055340}
   - component: {fileID: 7621405999881055339}
+  - component: {fileID: 7621405999881055341}
   m_Layer: 0
   m_Name: crystal_pack_6
   m_TagString: Untagged
@@ -12664,6 +12712,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 12.981673, y: 5.231442, z: 7.700206}
   m_Center: {x: -0.80486536, y: 2.4402797, z: 1.4075379}
+--- !u!114 &7621405999881055341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7179121484018138315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 11
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &7636524219064436170
 GameObject:
   m_ObjectHideFlags: 0
@@ -13050,6 +13120,7 @@ GameObject:
   - component: {fileID: 8313239133720259899}
   - component: {fileID: 8735714860982336923}
   - component: {fileID: 8735714860982336924}
+  - component: {fileID: 8735714860982336925}
   m_Layer: 0
   m_Name: crystal_pack_8
   m_TagString: Untagged
@@ -13100,6 +13171,28 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 23.098892, y: 5.6572227, z: 8.1157875}
   m_Center: {x: -5.5113525, y: 2.6836271, z: 1.1743488}
+--- !u!114 &8735714860982336925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735714860982336922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 12
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!33 &8759370349110947503
 MeshFilter:
   m_ObjectHideFlags: 0

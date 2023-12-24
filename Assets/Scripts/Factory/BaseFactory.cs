@@ -12,8 +12,6 @@ namespace Factory
         
         public void SpawnUnit(int unitType)
         {
-            if (!photonView.IsMine) return;
-            
             UnitTeam team = MultiplayerHelper.MasterPlayer.IsLocal ? UnitTeam.Green : UnitTeam.Red;
             
             switch (team)

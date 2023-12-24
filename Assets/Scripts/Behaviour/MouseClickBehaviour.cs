@@ -31,7 +31,7 @@ public class MouseClickBehaviour : MonoBehaviour
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerUnit))
             {
                 var unitManager = hit.transform.GetComponent<UnitManager>();
-                if (unitManager == null) return;
+                if (unitManager == null || unitManager.unitTeam != currentTeam) return;
 
                 if (Input.GetKey(KeyCode.LeftShift))
                     rtsUnitManager.ShiftClickSelectUnit(unitManager);

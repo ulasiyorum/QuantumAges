@@ -1303,8 +1303,10 @@ MonoBehaviour:
     SynchronizeType: 1
     Name: die
   m_SynchronizeLayers:
-  - SynchronizeType: 0
+  - SynchronizeType: 1
     LayerIndex: 0
+  - SynchronizeType: 1
+    LayerIndex: 1
 --- !u!1 &5714000328324395545
 GameObject:
   m_ObjectHideFlags: 0

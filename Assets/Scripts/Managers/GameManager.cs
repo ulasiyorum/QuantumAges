@@ -1,11 +1,12 @@
 using System;
 using Consts;
 using Helpers;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Managers
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : MonoBehaviourPun
     {
         public static GameManager instance;
         public GameObject spawner_green;
@@ -32,12 +33,18 @@ namespace Managers
         {
             if (MultiplayerHelper.Players.Count == 2)
             {
-                PopUp.Success("All players connected, starting the game");
+                photonView.RPC("AllConnected", RpcTarget.All);
                 StartGame();
                 return;
             }
             
             PopUp.Warning("Waiting for other player to connect", WaitingConnection);
+        }
+
+        [PunRPC]
+        private void AllConnected()
+        {
+            PopUp.Success("All players connected, starting the game");
         }
 
         private void StartGame()
@@ -46,6 +53,8 @@ namespace Managers
             base_green.AssignOwner(MultiplayerHelper.MasterPlayer);
             spawner_red.AssignOwner(MultiplayerHelper.NonMasterPlayer);
             base_red.AssignOwner(MultiplayerHelper.NonMasterPlayer);
+            MachineryBehaviour.greenMachine.gameObject.AssignOwner(MultiplayerHelper.MasterPlayer);
+            MachineryBehaviour.redMachine.gameObject.AssignOwner(MultiplayerHelper.NonMasterPlayer);
         }
     }
 }

@@ -16,10 +16,6 @@ public class UnitManager : SoldierAnimator, IDamagable
     private NavMeshAgent agent;
     public SoldierEnum soldierType;
     public UnitTeam unitTeam;
-    private bool isMoving;
-    private bool isAttacking;
-    private bool isDead;
-    private bool isIdle;
     private IDamagable currentTarget;
     private float maxHealth;
     public float _health;
@@ -45,40 +41,23 @@ public class UnitManager : SoldierAnimator, IDamagable
     }
     
 
-    public override Task Animate()
+    public override void Animate()
     {
-        if (isDead)
-        {
+        if (_health <= 0)
             OnDie();
-            isDead = false;
-            return Task.CompletedTask;
-        }
-        if (isMoving)
-        {
-            OnMove();
-            isMoving = agent.remainingDistance > 0.1f;
-            
-            if(!isMoving)
-                OnIdle();
-            
-            return Task.CompletedTask;
-        }
-        if (isAttacking)
-        {
-            OnAttack();
-            isAttacking = false;
-            return Task.CompletedTask;
-        }
-        if (isIdle)
-        {
-            OnIdle();
-            isIdle = false;
-            
-            return Task.CompletedTask;
-        }
         
-        SetAnimationTrigger(false);
-        return Task.CompletedTask;
+        if (currentTarget == null
+            && agent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
+            OnIdle();
+
+        if (currentTarget != null && agent.hasPath)
+            OnMove();
+        
+        if (currentTarget != null && !agent.hasPath)
+            OnAttack();
+        
+        if(currentTarget == null && agent.hasPath)
+            OnMove();
     }
 
     public void SelectUnit()
@@ -94,13 +73,18 @@ public class UnitManager : SoldierAnimator, IDamagable
     public void MoveTo(Vector3 end)
     {
         agent.SetDestination(end);
-        isMoving = true;
+        OnMove();
     }
-    public void SetTarget(IDamagable target)
+    public void SetTarget(IDamagable target, UnitTeam targetTeam)
     {
         currentTarget = target;
 
         if (target == null) return;
+     
+        if (targetTeam == unitTeam)
+        {
+            return;
+        }
         
         if(target.GetType() == typeof(MachineryBehaviour))
             StartCoroutine(AttackTo((MachineryBehaviour)target));
@@ -124,9 +108,6 @@ public class UnitManager : SoldierAnimator, IDamagable
         length ??= GetCurrentAnimationLength();
         target.TakeDamage(_damage);
         agent.StopAgent();
-        isMoving = false;
-        isAttacking = true;
-        OnAttack();
         StartCoroutine(AttackTo(target, length));
     }
     
@@ -144,8 +125,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         }
         length ??= GetCurrentAnimationLength();
         target.TakeDamage(_damage);
-        isAttacking = true;
-        OnAttack();
+        
         StartCoroutine(AttackTo(target, length.Value));
     }
 
@@ -159,7 +139,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         _health -= damage;
         if (_health <= 0)
         {
-            isDead = true;
+            OnDie();
         }
     }
 }

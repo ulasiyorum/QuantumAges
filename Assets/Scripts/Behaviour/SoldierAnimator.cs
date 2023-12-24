@@ -6,21 +6,8 @@ public abstract class SoldierAnimator : MonoBehaviour
 {
     private Animator animator;
     
-    private bool animPlaying = false;
     private bool hasDied = false;
-
-    private bool AnimPlaying
-    {
-        get => animPlaying;
-        set
-        {
-            if (animPlaying != value)
-            {
-                animator.SetBool(AnimEnd, !value);
-            }
-            animPlaying = value;
-        }   
-    }
+    
 
     public static List<SoldierAnimator> soldiers = new List<SoldierAnimator>();
     private static readonly int AnimEnd = Animator.StringToHash("animEnd");
@@ -32,34 +19,47 @@ public abstract class SoldierAnimator : MonoBehaviour
     }
     
 
-    public abstract Task Animate();
+    public abstract void Animate();
 
     protected virtual void OnMove()
     {
-        AnimPlaying = true;
+        animator.SetLayerWeight(1,0);
+        animator.SetLayerWeight(2,0);
+        animator.SetLayerWeight(3,0);
+        animator.SetLayerWeight(1,1);
+        
+        animator.SetBool("animEnd", false);
         animator.SetBool("move", true);
     }
     protected virtual void OnAttack() 
     {
-        AnimPlaying = true;
+        animator.SetLayerWeight(1,0);
+        animator.SetLayerWeight(2,0);
+        animator.SetLayerWeight(3,0);
+        animator.SetLayerWeight(2,1);
+        animator.SetBool("animEnd", false);
         animator.SetBool("attack", true);
     }
     protected virtual void OnDie()
     {
         if (hasDied) return;
-        AnimPlaying = true;
+        animator.SetLayerWeight(3,1);
         animator.SetBool("die", true);
         hasDied = true;
     }
     protected virtual void OnIdle()
     {
-        AnimPlaying = true;
+        animator.SetLayerWeight(1,0);
+        animator.SetLayerWeight(2,0);
+        animator.SetLayerWeight(3,0);
+        animator.SetLayerWeight(0,1);
+        animator.SetBool("move", false);
+        animator.SetBool("attack", false);
         animator.SetBool("animEnd", true);
     }
     
     protected void SetAnimationTrigger(bool value)
     {
-        AnimPlaying = value;
         animator.SetBool("move", value);
         animator.SetBool("attack", value);
         animator.SetBool("animEnd", !value);

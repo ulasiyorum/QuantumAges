@@ -45,7 +45,7 @@ public class RTSUnitManager : MonoBehaviour
         foreach (var t in selectedUnitList.Where(x => x.unitTeam == team))
         {
             int count = selectedUnitList.Count(x => x.unitTeam == team);
-            t.SetTarget(null);
+            t.SetTarget(null, UnitTeam.Red);
             t.MoveTo(CalculatePosition(end, count, i));
             i++;
         }
@@ -90,7 +90,7 @@ public class RTSUnitManager : MonoBehaviour
     {
         foreach (var unit in selectedUnitList)
         {
-            unit.SetTarget(target);
+            unit.SetTarget(target, target.unitTeam);
         }
     }
     
@@ -98,7 +98,7 @@ public class RTSUnitManager : MonoBehaviour
     {
         foreach (var unit in selectedUnitList)
         {
-            unit.SetTarget(target);
+            unit.SetTarget(target, target.unitTeam);
         }
     }
 }
