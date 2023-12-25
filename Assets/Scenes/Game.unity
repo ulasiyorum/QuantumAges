@@ -5919,10 +5919,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panSpeed: 20
   panBorderThickness: 10
-  panLimit: {x: 75, y: 75}
+  panLimit: {x: 70, y: 70}
   scrollSpeed: 20
-  minY: 12
-  maxY: 48
+  minY: 8
+  maxY: 36
   green_initial_position: {fileID: 1440099495}
   red_initial_position: {fileID: 1879228225}
 --- !u!1 &1002380851 stripped
@@ -10318,6 +10318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84e8a50a2c0a0974688737bd81e30f50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedUnitList: []
 --- !u!114 &2124299783
 MonoBehaviour:
   m_ObjectHideFlags: 0

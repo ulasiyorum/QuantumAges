@@ -13,8 +13,8 @@ public class CameraManager : MonoBehaviour
     public Vector2 panLimit;
 
     public float scrollSpeed = 50f;
-    public float minY = 8f;
-    public float maxY = 48f;
+    public float minY = 4f;
+    public float maxY = 36f;
 
     [SerializeField] private Transform green_initial_position;
     [SerializeField] private Transform red_initial_position;
