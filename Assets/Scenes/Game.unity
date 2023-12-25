@@ -10353,7 +10353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c58efb344e2d4a00b8d2e9b4764663ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: 0
+  team: 1
   killCount: 0
   green_crystal_balance: 0
   blue_crystal_balance: 0
