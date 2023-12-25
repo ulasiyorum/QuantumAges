@@ -134,7 +134,7 @@ public class UnitManager : SoldierAnimator, IDamagable
     }
     public IEnumerator AttackTo(UnitManager target, float? length = null)
     {
-        if(currentTarget.GetId() != target.GetId())
+        if(currentTarget?.GetId() != target.GetId())
             yield break;
         
         var targetPosition = target.transform.position;
@@ -214,6 +214,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         _health -= damage;
         if (_health <= 0)
         {
+            RTSUnitManager.Instance.UnitList.Remove(this);
             RTSUnitManager.Instance.selectedUnitList.Remove(this);
             soldiers.Remove(this);
             photonView.RPC("SetCurrentTarget", RpcTarget.Others);
