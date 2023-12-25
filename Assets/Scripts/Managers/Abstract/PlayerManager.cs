@@ -54,6 +54,8 @@ namespace Managers.Abstract
         [PunRPC]
         public void TakeDamage(float damage)
         {
+            Debug.Log("taking damage" + health_base + " " + health_spawner);            
+            
             if(health_base > 0)
                 health_base -= damage;
             else

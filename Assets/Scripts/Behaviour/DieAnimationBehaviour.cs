@@ -17,7 +17,6 @@ public class DieAnimationBehaviour : StateMachineBehaviour
 
     public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("ASdasd");
         _this.Destroy();
     }
 
