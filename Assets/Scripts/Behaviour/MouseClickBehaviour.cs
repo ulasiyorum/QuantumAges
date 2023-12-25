@@ -78,14 +78,14 @@ public class MouseClickBehaviour : MonoBehaviourPun
                     if (currentTeam != UnitTeam.Green)
                     {
                         if(PlayerManager.green_manager.health_base > 0)
-                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+                            rtsUnitManager.AttackTo(hit.transform, currentTeam);
                         else
                             PopUp.Warning("Base is already destroyed");
                     }
                     else
                     {
                         if(PlayerManager.red_manager.health_base > 0)
-                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+                            rtsUnitManager.AttackTo(hit.transform, currentTeam);
                         else
                             PopUp.Warning("Base is already destroyed");
                     }
@@ -100,13 +100,11 @@ public class MouseClickBehaviour : MonoBehaviourPun
                             PopUp.Warning("You must destroy base first");
                             return;
                         }
-                        
-                        if(PlayerManager.green_manager.health_spawner > 0)
-                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+
+                        if (PlayerManager.green_manager.health_spawner > 0)
+                            rtsUnitManager.AttackTo(hit.transform, currentTeam);
                         else
-                            GameOverBehaviour.GameOver(UnitTeam.Green, currentTeam, 
-                                currentTeam == UnitTeam.Green ? PlayerManager.green_manager.killCount : PlayerManager.red_manager.killCount
-                            );
+                            PopUp.Success("You won");
                     }
                     
                     else
@@ -118,11 +116,9 @@ public class MouseClickBehaviour : MonoBehaviourPun
                         }
                         
                         if(PlayerManager.red_manager.health_spawner > 0)
-                            rtsUnitManager.AttackTo(hit.point, currentTeam);
+                            rtsUnitManager.AttackTo(hit.transform, currentTeam);
                         else
-                            GameOverBehaviour.GameOver(UnitTeam.Green, currentTeam, 
-                                currentTeam == UnitTeam.Green ? PlayerManager.green_manager.killCount : PlayerManager.red_manager.killCount
-                                );
+                            PopUp.Success("You won");
                     }
                 }
             }

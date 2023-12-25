@@ -209,6 +209,7 @@ public class MachineryBehaviour : MonoBehaviourPun, IDamagable
         return id;
     }
 
+    [PunRPC]
     public void TakeDamage(float damage)
     {
         health -= damage;

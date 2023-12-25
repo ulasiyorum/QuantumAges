@@ -45,6 +45,9 @@ public class UnitManager : SoldierAnimator, IDamagable
 
     public override void Animate()
     {
+        if (agent is null)
+            return;
+        
         if (_health <= 0)
             OnDie();
         
@@ -77,7 +80,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         agent.SetDestination(end);
         OnMove();
     }
-    public void SetTarget(IDamagable target, UnitTeam targetTeam, Vector3? overridePosition = null)
+    public void SetTarget(IDamagable target, UnitTeam targetTeam, Transform overrideTransform = null)
     {
         currentTarget = target;
 
@@ -96,7 +99,7 @@ public class UnitManager : SoldierAnimator, IDamagable
             StartCoroutine(AttackTo((UnitManager)target));
         
         else if(target.GetType() == typeof(PlayerManager))
-            StartCoroutine(AttackTo((PlayerManager)target , overridePosition: overridePosition));
+            StartCoroutine(AttackTo((PlayerManager)target , overrideTransform));
     }
     public IEnumerator AttackTo(UnitManager target, float? length = null)
     {
@@ -113,25 +116,16 @@ public class UnitManager : SoldierAnimator, IDamagable
         OnAttack();
 
         length ??= 0.75f;
-        target.TakeDamage(_damage);
+        target.photonView.RPC("TakeDamage", RpcTarget.All, _damage);
         yield return new WaitForSeconds(length.Value);
         transform.rotation = Quaternion.LookRotation(targetPosition , transform.position);
         
         agent.StopAgent();
         StartCoroutine(AttackTo(target, length));
     }
-    
-    // [PunRPC]
-    // public void Set 
-    // {
-    //     
-    // }
 
-    public IEnumerator AttackTo(PlayerManager target, float? length = null, Vector3? overridePosition = null)
+    public IEnumerator AttackTo(PlayerManager target, Transform overrideTransform, float? length = null)
     {
-        if (overridePosition == null)
-            yield break;
-        
         if(unitTeam == target.team)
             yield break;
         
@@ -149,10 +143,10 @@ public class UnitManager : SoldierAnimator, IDamagable
         length ??= 0.75f;
         yield return new WaitForSeconds(length.Value);
         agent.StopAgent();
-        transform.LookAt(target.transform);
-        target.TakeDamage(_damage);
+        transform.LookAt(overrideTransform);
+        target.photonView.RPC("TakeDamage", RpcTarget.All, _damage);
         
-        StartCoroutine(AttackTo(target, length.Value, overridePosition));
+        StartCoroutine(AttackTo(target, overrideTransform , length.Value));
     }
 
     public IEnumerator AttackTo(MachineryBehaviour target, float? length = null)
@@ -173,7 +167,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         yield return new WaitForSeconds(length.Value);
         agent.StopAgent();
         transform.LookAt(target.transform);
-        target.TakeDamage(_damage);
+        target.photonView.RPC("TakeDamage", RpcTarget.All, _damage);
 
         StartCoroutine(AttackTo(target, length.Value));
     }
@@ -183,6 +177,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         return id;
     }
 
+    [PunRPC]
     public void TakeDamage(float damage)
     {
         _health -= damage;

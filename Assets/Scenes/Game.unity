@@ -4401,7 +4401,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: winorlose
+  m_text: You won!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c69e5770ed838456398b6013a4e8b906, type: 2}
   m_sharedMaterial: {fileID: 7391630716820817629, guid: c69e5770ed838456398b6013a4e8b906, type: 2}
@@ -5395,6 +5395,7 @@ GameObject:
   m_Component:
   - component: {fileID: 886463539}
   - component: {fileID: 886463540}
+  - component: {fileID: 886463541}
   m_Layer: 5
   m_Name: GameOverScreen
   m_TagString: Untagged
@@ -5437,7 +5438,32 @@ MonoBehaviour:
   background: {fileID: 1741994100}
   scoreText: {fileID: 1071481237}
   winText: {fileID: 678553785}
-  others: []
+  others:
+  - {fileID: 919077813}
+  - {fileID: 4858104}
+  - {fileID: 1386844619}
+--- !u!114 &886463541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886463538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 14
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &919077813
 GameObject:
   m_ObjectHideFlags: 0
@@ -6250,7 +6276,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Soldiers Killed:'
+  m_text: 'Soldiers Killed: 164'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c69e5770ed838456398b6013a4e8b906, type: 2}
   m_sharedMaterial: {fileID: 7391630716820817629, guid: c69e5770ed838456398b6013a4e8b906, type: 2}
@@ -7308,7 +7334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1386844620
 RectTransform:
   m_ObjectHideFlags: 0

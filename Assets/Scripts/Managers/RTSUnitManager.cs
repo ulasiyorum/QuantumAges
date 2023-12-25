@@ -103,7 +103,7 @@ public class RTSUnitManager : MonoBehaviour
         }
     }
 
-    public void AttackTo(Vector3 target, UnitTeam targeter)
+    public void AttackTo(Transform target, UnitTeam targeter)
     {
         foreach (var unit in selectedUnitList.Where(x => x.unitTeam == targeter))
         {

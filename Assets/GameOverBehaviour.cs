@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using Consts;
+using Managers.Abstract;
+using Photon.Pun;
 using UnityEngine;
 
-public class GameOverBehaviour : MonoBehaviour
+public class GameOverBehaviour : MonoBehaviourPun
 {
     private static GameOverBehaviour Instance { set; get; }
     [SerializeField] private GameObject background;
@@ -17,8 +19,14 @@ public class GameOverBehaviour : MonoBehaviour
         Instance = this;
     }
 
+    [PunRPC]
     public static void GameOver(UnitTeam winnerTeam, UnitTeam localTeam, int soldiersKilled)
     {
+        var otherTeam = winnerTeam == UnitTeam.Green ? UnitTeam.Red : UnitTeam.Green;
+        Instance.photonView.RPC("GameOver", RpcTarget.Others, winnerTeam, otherTeam,
+            otherTeam == UnitTeam.Green ? PlayerManager.red_manager.killCount : PlayerManager.green_manager.killCount, 
+            soldiersKilled);
+        
         foreach (var other in Instance.others)
         {
             other.SetActive(true);
@@ -28,13 +36,6 @@ public class GameOverBehaviour : MonoBehaviour
         Instance.background.SetActive(true);
         Instance.winText.SetActive(true);
         Instance.scoreText.GetComponent<TMPro.TextMeshProUGUI>().text = $"You killed {soldiersKilled} enemies";
-        if (winnerTeam == localTeam)
-        {
-            Instance.winText.GetComponent<TMPro.TextMeshProUGUI>().text = "You win!";
-        }
-        else
-        {
-            Instance.winText.GetComponent<TMPro.TextMeshProUGUI>().text = "You lose!";
-        }
+        Instance.winText.GetComponent<TMPro.TextMeshProUGUI>().text = winnerTeam == localTeam ? "You win!" : "You lose!";
     }
 }
