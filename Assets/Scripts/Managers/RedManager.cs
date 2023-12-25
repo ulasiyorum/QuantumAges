@@ -1,6 +1,7 @@
 using System;
 using Consts;
 using Managers.Abstract;
+using Photon.Pun;
 using UnityEngine;
 
 namespace Managers
@@ -29,6 +30,31 @@ namespace Managers
             scaleX = health_spawner / 1500f;
             
             spawner_health_bar.transform.localScale = new Vector3(scaleX, spawner_health_bar.transform.localScale.y, spawner_health_bar.transform.localScale.z);
+        }
+
+        [PunRPC]
+        public override void TakeDamage(float damage)
+        {
+            Debug.Log("taking damage" + health_base + " " + health_spawner);            
+            
+            if(health_base > 0)
+                health_base -= damage;
+            else
+                health_spawner -= damage;
+
+            if (health_base < 0)
+            {
+                GameObject.Find("Base_1").SetActive(false);
+            }
+            
+            if (health_spawner < 0)
+            {
+                GameObject.Find("Spawner_1").SetActive(false);
+                GameOverBehaviour.GameOver(UnitTeam.Green, UnitTeam.Red, 
+                    green_manager.killCount
+                );
+            }
+                
         }
     }
 }

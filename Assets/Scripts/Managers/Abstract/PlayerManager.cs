@@ -51,46 +51,6 @@ namespace Managers.Abstract
             return id;
         }
         
-        [PunRPC]
-        public void TakeDamage(float damage)
-        {
-            Debug.Log("taking damage" + health_base + " " + health_spawner);            
-            
-            if(health_base > 0)
-                health_base -= damage;
-            else
-                health_spawner -= damage;
-
-            if (health_base < 0)
-            {
-                if (team == UnitTeam.Green)
-                {
-                    GameObject.Find("Base_0").SetActive(false);
-                }
-                else
-                {
-                    GameObject.Find("Base_1").SetActive(false);
-                }
-            }
-            
-            if (health_spawner < 0)
-            {
-                if (team == UnitTeam.Green)
-                {
-                    GameObject.Find("Spawner_0").SetActive(false);
-                    GameOverBehaviour.GameOver(UnitTeam.Red, UnitTeam.Green, 
-                        green_manager.killCount
-                    );
-                }
-                else
-                {
-                    GameObject.Find("Spawner_1").SetActive(false);
-                    GameOverBehaviour.GameOver(UnitTeam.Green, UnitTeam.Red, 
-                        green_manager.killCount
-                    );
-                }
-            }
-                
-        }
+        public abstract void TakeDamage(float damage);
     }
 }
