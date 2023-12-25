@@ -1172,7 +1172,7 @@ MonoBehaviour:
   unitTeam: 0
   _health: 115
   _damage: 20
-  _range: 2.5
+  _range: 3
   healthBarBG: {fileID: 3316210511824421617}
 --- !u!114 &7422056604127979572
 MonoBehaviour:

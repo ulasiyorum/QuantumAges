@@ -2641,7 +2641,7 @@ MonoBehaviour:
   unitTeam: 0
   _health: 140
   _damage: 40
-  _range: 8
+  _range: 10.5
   healthBarBG: {fileID: 6270101453681240983}
 --- !u!195 &-8184585835512238512
 NavMeshAgent:
