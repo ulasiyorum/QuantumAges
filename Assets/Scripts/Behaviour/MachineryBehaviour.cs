@@ -221,7 +221,6 @@ public class MachineryBehaviour : MonoBehaviourPun, IDamagable
 
     private void Die()
     {
-        Debug.Log("I AM DEAD");
         transform.position = spawnPos;
         health = 100;
     }

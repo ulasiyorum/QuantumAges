@@ -45,24 +45,54 @@ public class UnitManager : SoldierAnimator, IDamagable
 
     public override void Animate()
     {
-        if (agent is null)
+        if (animating)
             return;
         
-        if (_health <= 0)
-            OnDie();
-        
-        if (currentTarget == null
-            && agent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
-            OnIdle();
+        if (agent is null)
+            return;
+
+        if (_health <= 0 && !hasDied)
+        {
+            hasDied = true;
+            photonView.RPC("OnDie", RpcTarget.All);
+            return;
+        }
+
+
+        // if (currentTarget == null
+        //     && agent.pathStatus.Equals(NavMeshPathStatus.PathComplete))
+        // {
+        //     photonView.RPC("OnIdle", RpcTarget.All);
+        //     return;
+        // }
 
         if (currentTarget != null && agent.hasPath)
-            OnMove();
+        {
+            idle = false;
+            photonView.RPC("OnMove", RpcTarget.All);
+            return;
+        }
         
         if (currentTarget != null && !agent.hasPath)
-            OnAttack();
+        {
+            idle = false;
+            photonView.RPC("OnAttack", RpcTarget.All);
+            return;
+        }
+
+        if (currentTarget == null && agent.hasPath)
+        {
+            idle = false;
+            photonView.RPC("OnMove", RpcTarget.All);
+            return;
+        }
         
-        if(currentTarget == null && agent.hasPath)
-            OnMove();
+        if (currentTarget == null && !agent.hasPath && !idle)
+        {
+            idle = true;
+            photonView.RPC("OnIdle", RpcTarget.All);
+            return;
+        }
     }
 
     public void SelectUnit()
