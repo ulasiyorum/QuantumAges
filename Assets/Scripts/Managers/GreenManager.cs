@@ -51,7 +51,7 @@ namespace Managers
             if (health_spawner < 0)
             {
                 GameObject.Find("Spawner_0").SetActive(false);
-                GameOverBehaviour.GameOver(UnitTeam.Red, UnitTeam.Green,
+                GameOverBehaviour.GameOver(UnitTeam.Red, UnitTeam.Red,
                     green_manager.killCount
                 );
             }

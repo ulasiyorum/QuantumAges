@@ -22,7 +22,7 @@ public class GameOverBehaviour : MonoBehaviourPun
     [PunRPC]
     public static void GameOver(UnitTeam winnerTeam, UnitTeam localTeam, int soldiersKilled)
     {
-        var otherTeam = winnerTeam == UnitTeam.Green ? UnitTeam.Red : UnitTeam.Green;
+        var otherTeam = localTeam == UnitTeam.Green ? UnitTeam.Red : UnitTeam.Green;
         Instance.photonView.RPC("GameOver", RpcTarget.Others, winnerTeam, otherTeam,
             otherTeam == UnitTeam.Green ? PlayerManager.red_manager.killCount : PlayerManager.green_manager.killCount, 
             soldiersKilled);

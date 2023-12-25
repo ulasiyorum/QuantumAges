@@ -159,7 +159,7 @@ public class UnitManager : SoldierAnimator, IDamagable
     {
         if(unitTeam == target.team)
             yield break;
-        var targetPosition = target.transform.position;
+        var targetPosition = overrideTransform.position;
         var distance = Vector3.Distance(transform.position, targetPosition);
         if (distance > _range)
         {
