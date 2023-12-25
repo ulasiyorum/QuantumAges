@@ -129,8 +129,8 @@ public class UnitManager : SoldierAnimator, IDamagable
         else if(target.GetType() == typeof(UnitManager))
             StartCoroutine(AttackTo((UnitManager)target));
         
-        else if(target.GetType() == typeof(PlayerManager))
-            StartCoroutine(AttackTo((PlayerManager)target , overrideTransform));
+        else if(target is PlayerManager manager)
+            StartCoroutine(AttackTo(manager , overrideTransform));
     }
     public IEnumerator AttackTo(UnitManager target, float? length = null)
     {
@@ -159,16 +159,13 @@ public class UnitManager : SoldierAnimator, IDamagable
     {
         if(unitTeam == target.team)
             yield break;
-        
         var targetPosition = target.transform.position;
-        
         var distance = Vector3.Distance(transform.position, targetPosition);
-        if (distance > _range * 2.5f + 2.5f)
+        if (distance > _range)
         {
             MoveTo(targetPosition);
-            yield return new WaitUntil(() => agent.remainingDistance <= _range);
+            yield return new WaitUntil(() => distance <= _range);
         }
-        
         OnAttack();
         
         length ??= 0.75f;
@@ -176,7 +173,7 @@ public class UnitManager : SoldierAnimator, IDamagable
         agent.StopAgent();
         transform.LookAt(overrideTransform);
         target.photonView.RPC("TakeDamage", RpcTarget.All, _damage);
-        
+
         StartCoroutine(AttackTo(target, overrideTransform , length.Value));
     }
 
@@ -184,13 +181,12 @@ public class UnitManager : SoldierAnimator, IDamagable
     {
         if (currentTarget?.GetId() != target.GetId())
             yield break;
-        
         var targetPosition = target.transform.position;
         var distance = Vector3.Distance(transform.position, targetPosition);
         if (distance > _range)
         {
             MoveTo(targetPosition);
-            yield return new WaitUntil(() => agent.remainingDistance <= _range);
+            yield return new WaitUntil(() => distance <= _range);
         }
         OnAttack();
 

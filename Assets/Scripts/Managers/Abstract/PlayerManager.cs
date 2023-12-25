@@ -51,6 +51,7 @@ namespace Managers.Abstract
             return id;
         }
         
+        [PunRPC]
         public abstract void TakeDamage(float damage);
     }
 }
