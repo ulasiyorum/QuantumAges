@@ -172,6 +172,7 @@ MonoBehaviour:
   _health: 105
   _damage: 25
   _range: 8
+  healthBarBG: {fileID: 6757080734288118267}
 --- !u!195 &-8383407079691658958
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -9,7 +9,7 @@ using UnityEngine;
 public class RTSUnitManager : MonoBehaviour
 {
     public static RTSUnitManager Instance { private set; get; }
-    private List<UnitManager> selectedUnitList;
+    public List<UnitManager> selectedUnitList;
     public List<UnitManager> UnitList { private set; get; }
 
 

@@ -23,7 +23,8 @@ public class UnitManager : SoldierAnimator, IDamagable
     public float _health;
     public float _damage;
     public float _range;
-
+    
+    public SpriteRenderer healthBarBG;
     protected override void Awake()
     {
         maxHealth = _health;
@@ -213,6 +214,9 @@ public class UnitManager : SoldierAnimator, IDamagable
         _health -= damage;
         if (_health <= 0)
         {
+            RTSUnitManager.Instance.selectedUnitList.Remove(this);
+            soldiers.Remove(this);
+            photonView.RPC("SetCurrentTarget", RpcTarget.Others);
             OnDie();
             
             if(unitTeam == UnitTeam.Green)
@@ -227,5 +231,19 @@ public class UnitManager : SoldierAnimator, IDamagable
     public void SetUnitTeam(int team)
     {
         unitTeam = (UnitTeam) team;
+        
+        var localTeam = PhotonNetwork.MasterClient.IsLocal ? UnitTeam.Green : UnitTeam.Red;
+
+        if (localTeam != unitTeam)
+        {
+            healthBar.gameObject.SetActive(false);
+            healthBarBG.gameObject.SetActive(false);
+        }
+    }
+    
+    [PunRPC]
+    public void SetCurrentTarget()
+    {
+        currentTarget = null;
     }
 }
