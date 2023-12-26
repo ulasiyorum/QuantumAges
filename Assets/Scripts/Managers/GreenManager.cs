@@ -37,7 +37,7 @@ namespace Managers
         }
 
         [PunRPC]
-        public override void TakeDamage(float damage)
+        public void TakeDamageGreen(float damage)
         {
             Debug.Log("taking damage" + health_base + " " + health_spawner);
 

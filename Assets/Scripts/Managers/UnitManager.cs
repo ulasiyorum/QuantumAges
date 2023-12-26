@@ -172,7 +172,10 @@ public class UnitManager : SoldierAnimator, IDamagable
         yield return new WaitForSeconds(length.Value);
         agent.StopAgent();
         transform.LookAt(overrideTransform);
-        target.photonView.RPC("TakeDamage", RpcTarget.All, _damage);
+        
+        var targetString = target.team == UnitTeam.Green ? "Green" : "Red";
+        
+        target.photonView.RPC("TakeDamage" + targetString, RpcTarget.All, _damage);
 
         StartCoroutine(AttackTo(target, overrideTransform , length.Value));
     }

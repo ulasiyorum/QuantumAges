@@ -31,9 +31,9 @@ namespace Managers
             
             spawner_health_bar.transform.localScale = new Vector3(scaleX, spawner_health_bar.transform.localScale.y, spawner_health_bar.transform.localScale.z);
         }
-
+        
         [PunRPC]
-        public override void TakeDamage(float damage)
+        public void TakeDamageRed(float damage)
         {
             Debug.Log("taking damage" + health_base + " " + health_spawner);            
             

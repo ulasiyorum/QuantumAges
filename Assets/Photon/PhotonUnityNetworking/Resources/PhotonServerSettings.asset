@@ -50,6 +50,8 @@ MonoBehaviour:
   - OnIdle
   - OnMove
   - SetCurrentTarget
+  - TakeDamageGreen
+  - TakeDamageRed
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
